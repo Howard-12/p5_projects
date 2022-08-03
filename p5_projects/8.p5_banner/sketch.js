@@ -4,7 +4,6 @@ const height = 500;
 const dots = [];
 
 let font;
-let p5js;
 let course;
 
 function preload() {
@@ -16,6 +15,7 @@ function setup() {
   frameRate(60);
   angleMode(DEGREES);
   noStroke();
+
   // draw dots
   for (let d=0; d<250; d++) {
     dots.push(new Dot());
@@ -31,6 +31,7 @@ function draw() {
 
   course = font.textToPoints('1701ICT', width/2-390, height/2+60, 200);
 
+  push();
   for (dot of dots) {
     dot.show();
     dot.edge();
@@ -49,9 +50,11 @@ function draw() {
       }
     }
   }
+  pop();
 
-  fill(190);
-  noStroke();
+  fill(0);
+  strokeWeight(3);
+  stroke(190);
   textFont(font);
   textSize(200);
   text('1701ICT', width/2-390, height/2+60);
