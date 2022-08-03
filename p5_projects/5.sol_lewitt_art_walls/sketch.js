@@ -11,7 +11,7 @@ function setup() {
 
 function draw() {
   background(200);
-// firstPart();
+  
   let first = new Wall('red', 'blue', 0, 0, 'circle', [100, 100, 100], 'yellow');
   let second = new Wall('yellow', 'red', width/3, 0, 'rect', [100, 100, 100, 100], 'blue');
   let third = new Wall('blue', 'yellow', width/3*2, 0, 'triangle', [100, 50, 40, 150, 160, 150], 'red');
@@ -89,27 +89,5 @@ function drawWalls() {
   line(width/3, 0, width/3, height);
   line(width/3*2, 0, width/3*2, height);
   line(0, height/2, width, height/2);
-  pop();
-}
-
-function firstPart() {
-  push();
-
-  push();
-  fill('red');
-  rect(0, 0, 200, 200);
-  strokeWeight(5);
-  stroke('blue');
-  for (let i = 0; i<height/2; i+=12)
-    line(0, i, width/3-2, i);
-  pop();
-
-  noStroke();
-  translate(100, 100);
-  fill('red');
-  circle(0, 0, 100);
-  stroke('yellow');
-  for (let i = 0; i<180; i+=5)
-    line(cos(i)*50, sin(i)*50, cos(360-i)*50, sin(360-i)*50);
   pop();
 }
