@@ -11,12 +11,12 @@ function setup() {
 
 function draw() {
   background(200);
-  
+
   let first = new Wall('red', 'blue', 0, 0, 'circle', [100, 100, 100], 'yellow');
   let second = new Wall('yellow', 'red', width/3, 0, 'rect', [100, 100, 100, 100], 'blue');
   let third = new Wall('blue', 'yellow', width/3*2, 0, 'triangle', [100, 50, 40, 150, 160, 150], 'red');
   let fourth = new Wall('red', 'yellow', 0, height/2, 'rect', [100, 100, 140, 100], 'blue');
-  let fifth = new Wall('yellow', 'blue', width/3, height/2, 'quad', [90, 50, 140, 50, 170, 150, 30, 150], 'red');
+  let fifth = new Wall('yellow', 'blue', width/3, height/2, 'quad', [75, 50, 125, 50, 170, 150, 30, 150], 'red');
   let sixth = new Wall('blue', 'red', width/3*2, height/2, 'quad', [70, 50, 170, 50, 130, 150, 30, 150], 'yellow');
 
   walls.push(first);
