@@ -3,9 +3,9 @@
 p5.js
 p5.min.js
 /p5_projects/test
+p5.play.js
 .idea
 node_modules
 docs
 __temp*
 examples/lib/p5.js
-p5.play.js
