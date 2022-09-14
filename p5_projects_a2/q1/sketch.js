@@ -11,6 +11,7 @@ let startLine;
 let car;
 
 let carRotation = 0;
+let speedOn = false;
 
 function preload()
 {
@@ -26,7 +27,6 @@ function setup()
 {
   let startbuffer = [];
 
-  angleMode(DEGREES);
   createCanvas(600, 600);
 
   grass = new Group();
@@ -69,36 +69,52 @@ function setup()
     ++tileR;
   }
 
-  // car = new Sprite(60, 380, 20, 20);
   car = new Sprite(startbuffer[0], startbuffer[1], 20, 20);
   car.rotateToDirection = true;
   car.rotation = 270;
+  car.friction = 0.1;
+  // car.debug = true;
   car.addImage(carTile);
+
+  camera.on();
+  camera.zoom = 1.5;
 }
 
 function draw()
 {
   background(250);
 
-  if (keyIsDown(LEFT_ARROW))
-    carRotation-=2;
-  if(keyIsDown(RIGHT_ARROW))
-    carRotation+=2;
+  if (keyIsDown(LEFT_ARROW) && speedOn){
+      car.rotation-=3;
+    // carRotation-=2;
+  }
+
+  if(keyIsDown(RIGHT_ARROW) && speedOn)
+    car.rotation+=3;
+    // carRotation+=2;
   if(keyIsDown(UP_ARROW))
-    car.setVelocity(cos(car.rotation + carRotation), sin(car.rotation + carRotation));
+  {
+    // car.setVelocity(cos(car.rotation + carRotation)*deltaTime/10, sin(car.rotation + carRotation)*deltaTime/10);
+    car.addSpeed(.15 *deltaTime/10, car.rotation);
+    speedOn = true;
+  }
   else if(keyIsDown(DOWN_ARROW))
   {
     car.rotateToDirection = false;
-    car.setVelocity(-cos(car.rotation + carRotation), -sin(car.rotation + carRotation));
-    car.rotation += carRotation;
+    car.addSpeed(-.15 *deltaTime/10, car.rotation);
+    speedOn = true;
+
+    // car.setVelocity(-cos(car.rotation + carRotation)*deltaTime, -sin(car.rotation + carRotation)*deltaTime);
+    // car.rotation += carRotation;
   }
   else
   {
-    car.rotateToDirection = true;
-    car.setVelocity(0,0);
+    speedOn = false;
   }
-  carRotation = 0;
-  console.log(car.rotation);
+
+  camera.position.x = car.position.x;
+  camera.position.y = car.position.y;
+  console.log("a");
   grass.draw();
   road.draw();
   startLine.draw();
