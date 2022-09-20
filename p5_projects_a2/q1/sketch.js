@@ -10,7 +10,7 @@ let road;
 let startLine;
 let car;
 
-let carRotation = 0;
+let startbuffer = [];
 let speedOn = false;
 
 function preload()
@@ -20,12 +20,11 @@ function preload()
     grassTile = loadImage("assets/grass_mix_ylw_d.jpg", img => { img.width = 40; img.height = 40; });
     startTile = loadImage("assets/stones_brown_d.jpg", img => { img.width = 40; img.height = 40; });
 
-    carTile = loadImage("assets/car_red.png", img => { img.resize(img.width/9, img.height/9); });
+    carTile = loadImage("assets/car_red.png", img => { img.resize(img.width/11, img.height/11); });
 }
 
 function setup()
 {
-  let startbuffer = [];
 
   createCanvas(600, 600);
 
@@ -44,6 +43,8 @@ function setup()
       {
         case "0":
           let g = new Sprite(tileC*40+20,tileR*40,40,40);
+          g.setCollider("rectangle", 0, 0, 40, 40);
+          // g.debug = true;
           g.addImage(grassTile);
           grass.add(g);
           ++tileC;
@@ -70,51 +71,49 @@ function setup()
   }
 
   car = new Sprite(startbuffer[0], startbuffer[1], 20, 20);
+  car.setCollider("rectangle", 0, 0, 22, 8);
   car.rotateToDirection = true;
   car.rotation = 270;
   car.friction = 0.1;
-  // car.debug = true;
+  //car.debug = true;
   car.addImage(carTile);
 
-  camera.on();
-  camera.zoom = 1.5;
 }
-
+let pre  = 0;
 function draw()
 {
   background(250);
 
-  if (keyIsDown(LEFT_ARROW) && speedOn){
+  if ((keyIsDown(LEFT_ARROW) && speedOn) || (keyIsDown(65) && speedOn)){
       car.rotation-=3;
-    // carRotation-=2;
   }
 
-  if(keyIsDown(RIGHT_ARROW) && speedOn)
+  if((keyIsDown(RIGHT_ARROW) && speedOn) || (keyIsDown(68) && speedOn))
     car.rotation+=3;
-    // carRotation+=2;
-  if(keyIsDown(UP_ARROW))
+  if(keyIsDown(UP_ARROW) || keyIsDown(87))
   {
-    // car.setVelocity(cos(car.rotation + carRotation)*deltaTime/10, sin(car.rotation + carRotation)*deltaTime/10);
-    car.addSpeed(.15 *deltaTime/10, car.rotation);
+    car.addSpeed(.1 *deltaTime/10, car.rotation);
     speedOn = true;
   }
-  else if(keyIsDown(DOWN_ARROW))
+  else if(keyIsDown(DOWN_ARROW) || keyIsDown(83))
   {
     car.rotateToDirection = false;
-    car.addSpeed(-.15 *deltaTime/10, car.rotation);
+    car.addSpeed(-.1 *deltaTime/10, car.rotation);
     speedOn = true;
-
-    // car.setVelocity(-cos(car.rotation + carRotation)*deltaTime, -sin(car.rotation + carRotation)*deltaTime);
-    // car.rotation += carRotation;
   }
   else
   {
+    if (abs(car.velocity.x) <= 0.2 && abs(car.velocity.y) <= 0.2)
     speedOn = false;
   }
 
-  camera.position.x = car.position.x;
-  camera.position.y = car.position.y;
-  console.log("a");
+  // grass.overlap(car, g => {
+  //   car.position.x = startbuffer[0];
+  //   car.position.y = startbuffer[1];
+  //   car.rotation = 270;
+  // })
+
+  // console.log(abs(car.velocity.x));
   grass.draw();
   road.draw();
   startLine.draw();
