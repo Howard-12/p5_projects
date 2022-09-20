@@ -75,7 +75,7 @@ function draw()
   if (fileMatches)
   {
     for (city of cities)
-    circle(city[1], city[2], 3);
+      circle(city[1], city[2], 3);
 
     textSize(15);
     for (header of headers) {
