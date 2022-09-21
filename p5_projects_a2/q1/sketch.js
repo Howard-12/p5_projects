@@ -35,6 +35,7 @@ function setup()
   let tileR = 0;
   for (let i of map)
   {
+    console.log(i);
     let tileC = 0;
 
     for (let j of i)
