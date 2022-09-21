@@ -25,13 +25,13 @@ function preload()
 
 function setup()
 {
-
   createCanvas(600, 600);
 
   grass = new Group();
   road = new Group();
   startLine = new Group();
 
+  let initRotation = 0;
   let tileR = 0;
   for (let i of map)
   {
@@ -61,6 +61,14 @@ function setup()
           road.add(s);
           startbuffer[0] = tileC*40+20;
           startbuffer[1] = tileR*40;
+          if (i[tileC-1] == '0' && i[tileC+3] == '0')
+          {
+            initRotation = 270;
+          }
+          else if (i[tileC-1] == '1' && i[tileC+3] == '1')
+          {
+            initRotation = 0;
+          }
           ++tileC;
           break;
         default:
@@ -71,10 +79,10 @@ function setup()
   }
 
   car = new Sprite(startbuffer[0], startbuffer[1], 20, 20);
-  car.setCollider("rectangle", 0, 0, 22, 8);
+  //car.setCollider("rectangle", 0, 0, 22, 8);
   car.rotateToDirection = true;
-  car.rotation = 270;
   car.friction = 0.1;
+  car.rotation = initRotation;
   //car.debug = true;
   car.addImage(carTile);
 
