@@ -16,8 +16,8 @@ let trails = [];
 
 function preload()
 {
-  tsp = loadStrings("TSP_EUC_Problems/ch150.tsp");
-  tspSol = loadStrings("TSP_Solutions/ch150.sol");
+  tsp = loadStrings("TSP_EUC_Problems/a280.tsp");
+  tspSol = loadStrings("TSP_Solutions/a280.sol");
 }
 
 function setup()
@@ -29,18 +29,21 @@ function setup()
     headers.push(tsp[header].trim().split(":"));
 
   // ------ process tsp city ------ //
-  for (let city=1; city<tsp.length-6; ++city)
+  let node = tsp.indexOf("NODE_COORD_SECTION")+2;
+  for (let city=0; city<tsp.length-node; ++city)
   {
     let c = [];
 
-    if (tsp[city+5].trim().split(" ")[0] == "EOF")
+    if (tsp[city+node-1].trim().split(" ")[0] == "EOF")
       break;
 
-    for (fc of tsp[city+5].trim().split(" "))
-      fc!='' ?  c.push(parseInt(fc)) : undefined;
-
+    for (fc of tsp[city+node-1].trim().split(" "))
+    {
+      fc!='' ? c.push(parseInt(fc)) : undefined;
+    }
     cities.push(c);
   }
+  console.log(cities);
 
   let minX = 0, minY = 0, maxX = 0, maxY = 0;
   let minXs =[], minYs = [], maxXs = [], maxYs = [];
@@ -89,7 +92,7 @@ function draw()
       y = lerp(cities[tspSol[step+2]-1][2], cities[tspSol[step+3]-1][2], t);
 
       for (trail of trails)
-      line(trail[0], trail[1], trail[2], trail[3]);
+        line(trail[0], trail[1], trail[2], trail[3]);
       line(cities[tspSol[step+2]-1][1], cities[tspSol[step+2]-1][2], x, y);
       t+=0.09;
     }
