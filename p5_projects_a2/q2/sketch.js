@@ -7,6 +7,8 @@ let headers;
 let cities;
 
 let fileMatches = false;
+let repeat = false;
+let re = true;
 
 let x = 0;
 let y = 0;
@@ -16,10 +18,9 @@ let trails = [];
 
 function preload()
 {
-  tspFile = loadStrings("TSP_EUC_Problems/a280.tsp");
-  tspSolFile = loadStrings("TSP_Solutions/a280.sol");
+  tspFile = loadStrings("TSP_EUC_Problems/berlin52.tsp");
+  tspSolFile = loadStrings("TSP_Solutions/berlin52.sol");
 }
-
 
 function setup()
 {
@@ -108,6 +109,7 @@ function showLoadedTEP()
   }
 }
 
+let o = false;
 function showSolution()
 {
   if (fileMatches)
@@ -117,19 +119,57 @@ function showSolution()
       x = lerp(cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+3]-1][1], t);
       y = lerp(cities[tspSolFile[step+2]-1][2], cities[tspSolFile[step+3]-1][2], t);
 
-      for (trail of trails)
-        line(trail[0], trail[1], trail[2], trail[3]);
+      // for (trail of trails)
+      //   line(trail[0], trail[1], trail[2], trail[3]);
+      // console.log(tspSolFile[cities.length], step, x);
+      // // console.log(tspSolFile);
+      // if (step == cities.length-2)
+      // {
+      //   x = lerp(cities[tspSolFile[cities.length]-1][1], cities[tspSolFile[cities.length+1]-1][1], t);
+      //   y = lerp(cities[tspSolFile[cities.length]-1][2], cities[tspSolFile[cities.length+1]-1][2], t);
+      //   line(cities[tspSolFile[cities.length]-1][1], cities[tspSolFile[cities.length]-1][2], x, y);
+      //   if (dist(x,cities[tspSolFile[cities.length]-1][1], y, cities[tspSolFile[cities.length]-1][2]) < 0.9)
+      //   o = true;
+      //
+      //   console.log("asdasdsadas");
+      // }
+      // if (o)
+      // {
+      //   x = lerp(cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[2]-1][1], t);
+      //   y = lerp(cities[tspSolFile[cities.length+1]-1][2], cities[tspSolFile[2]-1][2], t);
+      //   line(cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[cities.length+1]-1][2], x, y);
+      //
+      // }
+
       line(cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+2]-1][2], x, y);
-      t+=0.09;
+
+      t+=0.03*deltaTime/10;
     }
     else if (step < cities.length-2)
+    // else if (step < cities.length-2)
     {
-      trails.push([cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+2]-1][2], x, y]);
+      if (!repeat) {
+        trails.push([cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+2]-1][2], x, y]);
+      }
+
       ++step;
       t=0;
     }
+    else
+    {
+      repeat = true;
+      // step = 0;
+      // o = false;
+    }
 
+    if (step == cities.length-2 && re == true)
+    {
+      trails.push([cities[tspSolFile[cities.length]-1][1], cities[tspSolFile[cities.length]-1][2], cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[cities.length+1]-1][2]]);
+      re = false;
+    }
     line(cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+2]-1][2], x, y);
+    //line(cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[cities.length+1]-1][2], x, y);
+
     for (trail of trails)
       line(trail[0], trail[1], trail[2], trail[3]);
 
