@@ -39,18 +39,10 @@ function draw()
   background(255);
   translate(20, 20);
 
-  if (fileMatches)
-  {
-    showLoadedTEP();
-    showSolution();
-  }
-  else
-  {
-    textSize(30);
-    text("Please check file match!!", width/2-200, height/2-20);
-  }
-}
+  showLoadedTEP();
+  showSolution();
 
+}
 
 function loadTSPHeaders(tsp)
 {
@@ -118,29 +110,37 @@ function showLoadedTEP()
 
 function showSolution()
 {
-  if (t<1)
+  if (fileMatches)
   {
-    x = lerp(cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+3]-1][1], t);
-    y = lerp(cities[tspSolFile[step+2]-1][2], cities[tspSolFile[step+3]-1][2], t);
+    if (t<1)
+    {
+      x = lerp(cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+3]-1][1], t);
+      y = lerp(cities[tspSolFile[step+2]-1][2], cities[tspSolFile[step+3]-1][2], t);
 
+      for (trail of trails)
+        line(trail[0], trail[1], trail[2], trail[3]);
+      line(cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+2]-1][2], x, y);
+      t+=0.09;
+    }
+    else if (step < cities.length-2)
+    {
+      trails.push([cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+2]-1][2], x, y]);
+      ++step;
+      t=0;
+    }
+
+    line(cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+2]-1][2], x, y);
     for (trail of trails)
       line(trail[0], trail[1], trail[2], trail[3]);
-    line(cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+2]-1][2], x, y);
-    t+=0.09;
+
+    push();
+    fill(255,0,0);
+    circle(x, y, 6);
+    pop();
   }
-  else if (step < cities.length-2)
+  else
   {
-    trails.push([cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+2]-1][2], x, y]);
-    ++step;
-    t=0;
+    textSize(30);
+    text("Please check file match!!", width/2-200, height/2-20);
   }
-
-  line(cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+2]-1][2], x, y);
-  for (trail of trails)
-    line(trail[0], trail[1], trail[2], trail[3]);
-
-  push();
-  fill(255,0,0);
-  circle(x, y, 6);
-  pop();
 }
