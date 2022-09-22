@@ -20,7 +20,7 @@ function preload()
     grassTile = loadImage("assets/grass_mix_ylw_d.jpg", img => { img.width = 40; img.height = 40; });
     startTile = loadImage("assets/stones_brown_d.jpg", img => { img.width = 40; img.height = 40; });
 
-    carTile = loadImage("assets/car_red.png", img => { img.resize(img.width/11, img.height/11); });
+    carTile = loadImage("assets/car_red.png", img => { img.resize(img.width/13, img.height/13); });
 }
 
 function setup()
@@ -33,9 +33,9 @@ function setup()
 
   let initRotation = 0;
   let tileR = 0;
+
   for (let i of map)
   {
-    console.log(i);
     let tileC = 0;
 
     for (let j of i)
@@ -80,7 +80,6 @@ function setup()
   }
 
   car = new Sprite(startbuffer[0], startbuffer[1], 20, 20);
-  //car.setCollider("rectangle", 0, 0, 22, 8);
   car.rotateToDirection = true;
   car.friction = 0.1;
   car.rotation = initRotation;
@@ -93,9 +92,8 @@ function draw()
 {
   background(250);
 
-  if ((keyIsDown(LEFT_ARROW) && speedOn) || (keyIsDown(65) && speedOn)){
+  if ((keyIsDown(LEFT_ARROW) && speedOn) || (keyIsDown(65) && speedOn))
       car.rotation-=3;
-  }
 
   if((keyIsDown(RIGHT_ARROW) && speedOn) || (keyIsDown(68) && speedOn))
     car.rotation+=3;
@@ -122,7 +120,6 @@ function draw()
   //   car.rotation = 270;
   // })
 
-  // console.log(abs(car.velocity.x));
   grass.draw();
   road.draw();
   startLine.draw();
