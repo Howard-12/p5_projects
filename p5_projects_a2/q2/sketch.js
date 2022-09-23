@@ -8,7 +8,7 @@ let cities;
 
 let fileMatches = false;
 let repeat = false;
-let re = true;
+let re = false;
 
 let x = 0;
 let y = 0;
@@ -109,39 +109,49 @@ function showLoadedTEP()
   }
 }
 
-let o = false;
+let returnToFirst = false;
 function showSolution()
 {
   if (fileMatches)
   {
     if (t<1)
     {
-      x = lerp(cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+3]-1][1], t);
-      y = lerp(cities[tspSolFile[step+2]-1][2], cities[tspSolFile[step+3]-1][2], t);
+      // x = lerp(cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+3]-1][1], t);
+      // y = lerp(cities[tspSolFile[step+2]-1][2], cities[tspSolFile[step+3]-1][2], t);
+      // console.log(cities[tspSolFile[2]-1][1]);
 
       // for (trail of trails)
       //   line(trail[0], trail[1], trail[2], trail[3]);
       // console.log(tspSolFile[cities.length], step, x);
-      // // console.log(tspSolFile);
-      // if (step == cities.length-2)
-      // {
-      //   x = lerp(cities[tspSolFile[cities.length]-1][1], cities[tspSolFile[cities.length+1]-1][1], t);
-      //   y = lerp(cities[tspSolFile[cities.length]-1][2], cities[tspSolFile[cities.length+1]-1][2], t);
-      //   line(cities[tspSolFile[cities.length]-1][1], cities[tspSolFile[cities.length]-1][2], x, y);
-      //   if (dist(x,cities[tspSolFile[cities.length]-1][1], y, cities[tspSolFile[cities.length]-1][2]) < 0.9)
-      //   o = true;
-      //
-      //   console.log("asdasdsadas");
-      // }
-      // if (o)
-      // {
-      //   x = lerp(cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[2]-1][1], t);
-      //   y = lerp(cities[tspSolFile[cities.length+1]-1][2], cities[tspSolFile[2]-1][2], t);
-      //   line(cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[cities.length+1]-1][2], x, y);
-      //
-      // }
 
-      line(cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+2]-1][2], x, y);
+      if (returnToFirst)
+      {
+        x = lerp(cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[2]-1][1], t);
+        y = lerp(cities[tspSolFile[cities.length+1]-1][2], cities[tspSolFile[2]-1][2], t);
+        line(cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[cities.length+1]-1][2], x, y);
+        console.log(returnToFirst)
+      }
+      else
+      {
+        x = lerp(cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+3]-1][1], t);
+        y = lerp(cities[tspSolFile[step+2]-1][2], cities[tspSolFile[step+3]-1][2], t);
+        line(cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+2]-1][2], x, y);
+
+      }
+
+
+      // if (step == cities.length-2 && re == true)
+      if (re == true && trails.length < cities.length-1)
+      {
+        trails.push([cities[tspSolFile[cities.length]-1][1], cities[tspSolFile[cities.length]-1][2], cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[cities.length+1]-1][2]]);
+        // post operation
+        returnToFirst = true;
+        re = false;
+
+        print("dasdasdasdas");
+        //step=0;
+      }
+
 
       t+=0.03*deltaTime/10;
     }
@@ -158,17 +168,26 @@ function showSolution()
     else
     {
       repeat = true;
+      re = true;
+      t = 0;
+      returnToFirst = false;
+      step = 0;
+      print("return")
       // step = 0;
       // o = false;
     }
+//console.log(cities[tspSolFile[cities.length]-1][0]);
 
-    if (step == cities.length-2 && re == true)
-    {
-      trails.push([cities[tspSolFile[cities.length]-1][1], cities[tspSolFile[cities.length]-1][2], cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[cities.length+1]-1][2]]);
-      re = false;
-    }
+    // if (returnToFirst)
+    // {
+    //   line(cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[cities.length+1]-1][2], cities[tspSolFile[2]-1][1], cities[tspSolFile[2]-1][2]);
+    // print(returnToFirst)
+    // }
+    // else if (step == cities.length-2){
+    // line(cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[cities.length+1]-1][2], x, y);
+    // }
+
     line(cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+2]-1][2], x, y);
-    //line(cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[cities.length+1]-1][2], x, y);
 
     for (trail of trails)
       line(trail[0], trail[1], trail[2], trail[3]);
