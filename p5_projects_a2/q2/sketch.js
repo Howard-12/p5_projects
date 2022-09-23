@@ -124,7 +124,7 @@ function showSolution()
       //   line(trail[0], trail[1], trail[2], trail[3]);
       // console.log(tspSolFile[cities.length], step, x);
 
-      if (returnToFirst)
+      if (returnToFirst && trails.length < cities.length+1)
       {
         x = lerp(cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[2]-1][1], t);
         y = lerp(cities[tspSolFile[cities.length+1]-1][2], cities[tspSolFile[2]-1][2], t);
@@ -140,27 +140,16 @@ function showSolution()
       }
 
 
-      // if (step == cities.length-2 && re == true)
-      if (re == true && trails.length < cities.length-1)
-      {
-        trails.push([cities[tspSolFile[cities.length]-1][1], cities[tspSolFile[cities.length]-1][2], cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[cities.length+1]-1][2]]);
-        // post operation
-        returnToFirst = true;
-        re = false;
-
-        print("dasdasdasdas");
-        //step=0;
-      }
-
-
-      t+=0.03*deltaTime/10;
+      t+=0.05*deltaTime/10;
     }
     else if (step < cities.length-2)
     // else if (step < cities.length-2)
     {
       if (!repeat) {
-        trails.push([cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+2]-1][2], x, y]);
+        trails.push([cities[tspSolFile[step+2]-1][1], cities[tspSolFile[step+2]-1][2], cities[tspSolFile[step+3]-1][1], cities[tspSolFile[step+3]-1][2]]);
       }
+
+      // print(trails.length)
 
       ++step;
       t=0;
@@ -170,9 +159,28 @@ function showSolution()
       repeat = true;
       re = true;
       t = 0;
-      returnToFirst = false;
       step = 0;
-      print("return")
+      returnToFirst = false;
+
+      // if (step == cities.length-2 && re == true)
+      if (re == true && trails.length < cities.length-1)
+      {
+        trails.push([cities[tspSolFile[cities.length]-1][1], cities[tspSolFile[cities.length]-1][2], cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[cities.length+1]-1][2]]);
+        // post operation
+        returnToFirst = false;
+        re = false;
+
+        print("dasdasdasdas");
+        //step=0;
+      }
+      if (trails.length < cities.length-1){
+        returnToFirst = true;
+      }
+      if (trails.length == cities.length-1)
+        trails.push([cities[tspSolFile[cities.length+1]-1][1], cities[tspSolFile[cities.length+1]-1][2], cities[tspSolFile[2]-1][1], cities[tspSolFile[2]-1][2]])
+
+      print(trails.length);
+      print(cities.length);
       // step = 0;
       // o = false;
     }
