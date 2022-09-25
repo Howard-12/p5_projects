@@ -72,7 +72,6 @@ function loadTSP(tsp)
 
     tspCities.push(c);
   }
-  // console.log(tspCities);
 
   let minX = 0, minY = 0, maxX = 0, maxY = 0;
   let minXs =[], minYs = [], maxXs = [], maxYs = [];
@@ -106,7 +105,7 @@ function showLoadedTEP()
   textSize(15);
   for (header of headers) {
     header[0].trim() == "COMMENT" ? text(header[1], -17, -1) : undefined;
-    header[0].trim() == "DIMENSION" ? text(header[1], -17, 15) : undefined;
+    header[0].trim() == "DIMENSION" ? text(header[1] + " cities", -17, 15) : undefined;
   }
 }
 

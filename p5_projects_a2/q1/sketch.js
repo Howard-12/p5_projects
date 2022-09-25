@@ -9,6 +9,7 @@ let grass;
 let road;
 let startLine;
 let car;
+let initRotation = 0;
 
 let startbuffer = [];
 let speedOn = false;
@@ -31,7 +32,6 @@ function setup()
   road = new Group();
   startLine = new Group();
 
-  let initRotation = 0;
   let tileR = 0;
 
   for (let i of map)
@@ -45,7 +45,6 @@ function setup()
         case "0":
           let g = new Sprite(tileC*40+20,tileR*40,40,40);
           g.setCollider("rectangle", 0, 0, 40, 40);
-          // g.debug = true;
           g.addImage(grassTile);
           grass.add(g);
           ++tileC;
@@ -83,7 +82,6 @@ function setup()
   car.rotateToDirection = true;
   car.friction = 0.1;
   car.rotation = initRotation;
-  //car.debug = true;
   car.addImage(carTile);
 
 }
@@ -114,11 +112,11 @@ function draw()
     speedOn = false;
   }
 
-  // grass.overlap(car, g => {
-  //   car.position.x = startbuffer[0];
-  //   car.position.y = startbuffer[1];
-  //   car.rotation = 270;
-  // })
+  grass.overlap(car, g => {
+    car.position.x = startbuffer[0];
+    car.position.y = startbuffer[1];
+    car.rotation = initRotation;
+  })
 
   grass.draw();
   road.draw();
