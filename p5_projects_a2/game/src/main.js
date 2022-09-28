@@ -1,4 +1,4 @@
-const width = 600, height = 800;
+
 
 let game;
 
@@ -6,18 +6,20 @@ function preload()
 {
 
 }
-
+// let t = [0,1,2,3]
 function setup()
 {
   createCanvas(width, height);
+  angleMode(DEGREES);
 
   game = new Game();
+
 
   // for (let i = 0; i < t.length - 1; ++i)
   // {
   //   for (let j = i + 1; j < t.length; ++j)
   //   {
-  //
+  //     print(t[i] + "to "+ t[j]);
   //   }
   // }
 }

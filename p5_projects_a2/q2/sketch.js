@@ -20,8 +20,8 @@ let end = false;
 
 function preload()
 {
-  tspFile = loadStrings("TSP_EUC_Problems/berlin52.tsp");
-  tspSolFile = loadStrings("TSP_Solutions/berlin52.sol");
+  tspFile = loadStrings("TSP_EUC_Problems/ch150.tsp");
+  tspSolFile = loadStrings("TSP_Solutions/ch150.sol");
 }
 
 function setup()
