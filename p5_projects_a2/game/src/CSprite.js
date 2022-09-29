@@ -2,7 +2,7 @@ const width = 600, height = 800;
 
 class CSprite
 {
-  constructor(posx, posy, width, height)
+  constructor(posx, posy, width, height, type)
   {
     this.posx = posx;
     this.posy = posy;
@@ -12,10 +12,23 @@ class CSprite
     this.speed = 0;
     this.life = 0;
     this.vertices = [];
+    this.type = type;
+    this.maxLife;
   }
 
   update()
   {
+    switch (this.type)
+    {
+      case "player":
+        // print("player");
+        break;
+      case "en1":
+        this.maxLife = 500; 
+        this.life++;
+        this.posy++;
+        break;
+    }
     // print();
     // print(mouseX, mouseY)
   }

@@ -8,10 +8,11 @@ class Game
 
     // this.allEnties = new AllEnties();
     this.enemies = [];
-
+    // for (let en=0; en<10; ++en)
+      // this.enemies.push(new CScript());
   }
 
-  static player = new CSprite(200, 200, 30, 60);
+  static player = new CSprite(200, 200, 30, 60, "player");
   //static player = new CSprite(, 0, 30, 60);
   static gamePause = false;
   static gameP()
@@ -42,10 +43,10 @@ class Game
 
   collide(group1, group2)
   {
-    // for (let i=0; i<group1.length; ++i)
-    // {
-    //
-    // }
+    for (let i=0; i<group1.length; ++i)
+    {
+
+    }
   }
 
   update()
@@ -54,19 +55,32 @@ class Game
     // this.windowS.onAttach(this.mainGameScene);
     // this.windowS.onDetach(this.mainMenu);
 
-    if (frameCount % random(60, 60*3) == 0)
-      print("count in second");
-
     this.mainMenu.b1.mousePressed(()=>{Game.gamePause=!Game.gamePause})
     this.windowS.update();
     if (!Game.gamePause)
+    {
+      if (frameCount % 60 == 0)
+      {
+        // let rand= random();
+        if (random() < 0.5)
+          this.enemies.push(new CSprite(random(30, width-30),0,30,60,"en1"));
+      }
+      for (let en of this.enemies)
+      {
+        if (en.life > en.maxLife)
+          this.enemies.splice(this.enemies.indexOf(en), 1)
+        en.update();
+      }
       Game.player.update();
+    }
   }
 
   draw()
   {
     background(230);
     this.windowS.draw();
+    for (let en of this.enemies)
+      en.draw();
     Game.player.draw();
   }
 }
@@ -75,6 +89,4 @@ function keyPressed()
 {
   if (keyCode === ESCAPE)
     Game.gameP();
-  // if (keyCode === 81)
-  //   Game.player.rotation++;
 }
