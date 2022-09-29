@@ -59,6 +59,7 @@ class Game
     this.windowS.update();
     if (!Game.gamePause)
     {
+      // if collide(Game.player, this.enemies);
       if (frameCount % 60 == 0)
       {
         // let rand= random();
