@@ -19,10 +19,6 @@ class MainMenu
     this.b1.show();
     this.b1.position(10, 150);
 
-    // push();
-    // fill(0);
-    // rect(width/2-15, height/2-5, 30, 10);
-    // pop();
   }
 
 }

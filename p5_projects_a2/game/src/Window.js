@@ -2,9 +2,6 @@ class Window
 {
   constructor ()
   {
-    // this.info;
-    // this.scene1 = scene1;
-    // this.scene2 = scene2;
     this.scenes = [];
   }
 
@@ -27,7 +24,6 @@ class Window
 
   draw()
   {
-    // print(this.scenes.length);
     for (let s=0; s<this.scenes.length; ++s) this.scenes[s].draw();
   }
 }
