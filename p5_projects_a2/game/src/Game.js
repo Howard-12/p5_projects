@@ -43,7 +43,7 @@ class Game
 
   collide(group1, group2)
   {
-    for (let i=0; i<group1.length; ++i)
+    for (let i=0; i<group2.length; ++i)
     {
 
     }
@@ -62,14 +62,13 @@ class Game
       // if collide(Game.player, this.enemies);
       if (frameCount % 60 == 0)
       {
-        // let rand= random();
         if (random() < 0.5)
           this.enemies.push(new CSprite(random(30, width-30),0,30,60,"en1"));
       }
       for (let en of this.enemies)
       {
         if (en.life > en.maxLife)
-          this.enemies.splice(this.enemies.indexOf(en), 1)
+          this.enemies.splice(this.enemies.indexOf(en), 1);
         en.update();
       }
       Game.player.update();
