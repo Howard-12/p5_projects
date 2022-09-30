@@ -21,35 +21,45 @@ class CSprite
     switch (this.type)
     {
       case "player":
-        // print("player");
         break;
       case "en1":
-        this.maxLife = 500; 
+        this.maxLife = 500;
         this.life++;
         this.posy++;
         break;
     }
-    // print();
-    // print(mouseX, mouseY)
   }
 
   draw()
   {
     push();
     rectMode(CENTER);
-    // translate(width/2, height/2);
     translate(this.posx, this.posy);
-
     rotate(this.rotation);
+    // rotate(this.rotation*PI/180);
 
     fill(215, 0, 200);
-    rect(0, 0, 30, 60);
+    rect(0, 0, this.width, this.height);
     pop();
   }
 
   addSpeed(xSpeed, ySpeed)
   {
     this.posx += xSpeed;
-    // translate(xSpeed, ySpeed);
+    this.posy += ySpeed;
   }
-}
+
+  getVertices()
+  {
+    return [
+      (-this.width/2)*Math.cos(this.rotation*PI/180) - (-this.height/2)*Math.sin(this.rotation*PI/180) + this.posx,
+      (-this.width/2)*Math.sin(this.rotation*PI/180) + (-this.height/2)*Math.cos(this.rotation*PI/180) + this.posy,
+      (this.width/2)*Math.cos(this.rotation*PI/180) - (-this.height/2)*Math.sin(this.rotation*PI/180) + this.posx,
+      (this.width/2)*Math.sin(this.rotation*PI/180) + (-this.height/2)*Math.cos(this.rotation*PI/180) + this.posy,
+      (this.width/2)*Math.cos(this.rotation*PI/180) - (this.height/2)*Math.sin(this.rotation*PI/180) + this.posx,
+      (this.width/2)*Math.sin(this.rotation*PI/180) + (this.height/2)*Math.cos(this.rotation*PI/180) + this.posy,
+      (-this.width/2)*Math.cos(this.rotation*PI/180) - (this.height/2)*Math.sin(this.rotation*PI/180) + this.posx,
+      (-this.width/2)*Math.sin(this.rotation*PI/180) + (this.height/2)*Math.cos(this.rotation*PI/180) + this.posy,
+    ]
+  }
+ }
