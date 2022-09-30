@@ -14,6 +14,8 @@ class CSprite
     this.vertices = [];
     this.type = type;
     this.maxLife;
+    this.st = [255, 0, 0];
+    this.c = false;
   }
 
   update()
@@ -21,6 +23,12 @@ class CSprite
     switch (this.type)
     {
       case "player":
+        if (this.c)
+          this.st = [0, 0, 255];
+        else
+          this.st = [255, 0, 0];
+        this.c = false;
+
         break;
       case "en1":
         this.maxLife = 500;
@@ -39,6 +47,8 @@ class CSprite
     // rotate(this.rotation*PI/180);
 
     fill(215, 0, 200);
+    stroke(...this.st);
+    strokeWeight(1);
     rect(0, 0, this.width, this.height);
     pop();
   }

@@ -37,51 +37,44 @@ class Game
     }
   }
 
-  collide(verticesA, verticesB)
-  {
-<<<<<<< HEAD
-    for (let i=0; i<group2.length; ++i)
-=======
-    for (let i=0; i<verticesA.length; i+=2)
->>>>>>> 94f30d862c02d16900fad8c994dac73a0f4b8c45
-    {
-      let vaX = verticesA[i];
-      let vaY = verticesA[i+1];
-      let vbX = verticesA[(i+2) % verticesA.length];
-      let vbY = verticesA[(i+3) % verticesA.length];
-
-      let edgeX = Math.abs(vbX-vaX);
-      let edgeY = Math.abs(vbY-vaY);
-      let axis = [-edgeY, edgeX];
-
-      let 
-    }
-  }
-
-  projectVertices()
-  {
-
-  }
-
   update()
   {
     this.windowS.onAttach(this.mainMenu);
-    // this.windowS.onAttach(this.mainGameScene);
+    this.windowS.onAttach(this.mainGameScene);
     // this.windowS.onDetach(this.mainMenu);
     this.mainMenu.b1.mousePressed(()=>{Game.gamePause=!Game.gamePause})
     this.windowS.update();
     if (!Game.gamePause)
     {
-      // if collide(Game.player, this.enemies);
+      // for (let i = 0; i < t.length - 1; ++i)
+      // {
+      //   for (let j = i + 1; j < t.length; ++j)
+      //   {
+      //
+      //   }
+      // }
+
+        for (let enemy=0; enemy<this.enemies.length; ++enemy)
+        {
+          if (this.collide(Game.player.getVertices(), this.enemies[enemy].getVertices()))
+          {
+            print("collided")
+
+            Game.player.c = true;
+          }
+
+          // else Game.player.st = [255, 0, 0];
+        }
+
+
       if (frameCount % 60 == 0)
       {
-<<<<<<< HEAD
         if (random() < 0.5)
-=======
-        if (random() < 0.4)
->>>>>>> 94f30d862c02d16900fad8c994dac73a0f4b8c45
           this.enemies.push(new CSprite(random(30, width-30),0,30,60,"en1"));
       }
+// if (this.enemies.length < 1)
+//       this.enemies.push(new CSprite(random(30, width-30),300,30,60,"en1"));
+
       for (let en of this.enemies)
       {
         if (en.life > en.maxLife)
@@ -89,38 +82,80 @@ class Game
         en.update();
       }
       Game.player.update();
-      print(Game.player.getVertices().length);
-      // for (let i=0; i<Game.player.getVertices().length; i+=4)
-      // {
-      //   let vaX = Game.player.getVertices()[i];
-      //   let vaY = Game.player.getVertices()[i+1];
-      //   let vbX = Game.player.getVertices()[i+2];
-      //   let vbY = Game.player.getVertices()[i+3];
-      //
-      //   // let edgeX =
-      //   print(vaX, vaY, vbX, vbY)
-      // }
+
     }
+  }
+
+  collide(verticesA, verticesB)
+  {
+    for (let i=0; i<verticesA.length; i+=2)
+    {
+      let vaX = verticesA[i];
+      let vaY = verticesA[i+1];
+      let vbX = verticesA[(i+2) % verticesA.length];
+      let vbY = verticesA[(i+3) % verticesA.length];
+
+      let edgeX = vbX-vaX;
+      let edgeY = vbY-vaY;
+      // let edgeX = Math.abs(vbX-vaX);
+      // let edgeY = Math.abs(vbY-vaY);
+      let axis = [-edgeY, edgeX];
+      // print(axis);
+      let vA = this.projectVertices(verticesA, axis);
+      let vB = this.projectVertices(verticesB, axis);
+
+      if (vA[0] >= vB[1] || vB[0] >= vA[1])
+      {
+        return false;
+      }
+    }
+
+    for (let i=0; i<verticesB.length; i+=2)
+    {
+      let vaX = verticesB[i];
+      let vaY = verticesB[i+1];
+      let vbX = verticesB[(i+2) % verticesA.length];
+      let vbY = verticesB[(i+3) % verticesA.length];
+
+      let edgeX = Math.abs(vbX-vaX);
+      let edgeY = Math.abs(vbY-vaY);
+      let axis = [-edgeY, edgeX];
+
+      let vA = this.projectVertices(verticesA, axis);
+      let vB = this.projectVertices(verticesB, axis);
+
+      if (vA[0] >= vB[1] || vB[0] >= vA[1])
+        return false;
+    }
+
+    return true;
+  }
+
+  projectVertices(vertices, axis)
+  {
+    let min = Infinity;
+    let max = -Infinity;
+
+    for (let i=0; i<vertices.length; i+=2)
+    {
+      let v = [vertices[i], vertices[i+1]];
+      let projection = v[0]*axis[0] + v[1]*axis[1];
+      // print(vertices[0]);
+      if (projection < min) min = projection;
+      if (projection > max) max = projection;
+    }
+    // print(min, max);
+    return [min, max];
   }
 
   draw()
   {
     background(230);
-    circle(Game.player.getVertices()[0], Game.player.getVertices()[1], 10);
-    circle(Game.player.getVertices()[2], Game.player.getVertices()[3], 10);
-    circle(Game.player.getVertices()[4], Game.player.getVertices()[5], 10);
-    circle(Game.player.getVertices()[6], Game.player.getVertices()[7], 10);
 
 
     this.windowS.draw();
     for (let en of this.enemies)
-    {
-      circle(en.getVertices()[0], en.getVertices()[1], 10);
-      circle(en.getVertices()[2], en.getVertices()[3], 10);
-      circle(en.getVertices()[4], en.getVertices()[5], 10);
-      circle(en.getVertices()[6], en.getVertices()[7], 10);
       en.draw();
-    }
     Game.player.draw();
   }
 }

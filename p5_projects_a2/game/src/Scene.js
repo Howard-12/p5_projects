@@ -41,7 +41,7 @@ class MainGameScene
 
   draw()
   {
-    background(255, 255, 0);
+    // background(255, 255, 0);
 
     this.b2.show();
     this.b2.position(10, 200);

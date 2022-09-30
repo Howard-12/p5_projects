@@ -15,13 +15,7 @@ function setup()
   game = new Game();
 
 
-  // for (let i = 0; i < t.length - 1; ++i)
-  // {
-  //   for (let j = i + 1; j < t.length; ++j)
-  //   {
-  //     print(t[i] + "to "+ t[j]);
-  //   }
-  // }
+
 }
 
 function draw()

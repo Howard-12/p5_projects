@@ -81,6 +81,7 @@ function setup()
   car = new Sprite(startbuffer[0], startbuffer[1], 20, 20);
   car.rotateToDirection = true;
   car.friction = 0.1;
+  car.debug = true;
   car.rotation = initRotation;
   car.addImage(carTile);
 
