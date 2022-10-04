@@ -2,15 +2,29 @@ class Game
 {
   constructor()
   {
+    this.gameStart = false;
+    this.gameRestart = false;
+    this.loadScene = false;
+    this.settingPause = false;
+    this.windowS = new Window();
     this.mainMenu = new MainMenu();
     this.mainGameScene = new MainGameScene();
-    this.windowS = new Window();
+    this.loadingScence = new LoadingScene();
+    this.settingScene = new SettingMenu();
+    this.upgradeMenu = new UpgradeMenu();
 
-    // this.allEnties = new AllEnties();
     this.enemies = [];
+    this.playerBullets = [];
+
+    this.scoreCount = 0;
+    this.bgy = 0;
+
   }
 
-  static player = new CSprite(200, 200, 30, 60, "player");
+  static player = new Player(width/2-10, height/2-30, 60, 120);
+  // static player = new CSprite(width/2-10, height/2-30, 60, 120, "player");
+  static playerScore = 0;
+  static playerMoney = 0;
   static gamePause = false;
   static gameP()
   {
@@ -21,6 +35,7 @@ class Game
   {
     if (!Game.gamePause)
     {
+      // ------ player moving ------ //
       if ((keyIsDown(LEFT_ARROW)) || (keyIsDown(65)))
         Game.player.addSpeed(-2*(deltaTime/10), 0);
       if((keyIsDown(RIGHT_ARROW)) || (keyIsDown(68)))
@@ -30,60 +45,223 @@ class Game
       if(keyIsDown(DOWN_ARROW) || keyIsDown(83))
         Game.player.addSpeed(0, 2*(deltaTime/10));
 
+      // ------ shooting ------ //
+      if (keyIsDown(32) || (mouseButton == LEFT && mouseIsPressed == true))
+        if (!Game.player.onCooldown)
+        {
+          Game.player.onCooldown = true;
+          this.playerBullets.push(new CSprite(Game.player.posx, Game.player.posy-50, 10, 10, "pb"));
+        }
+
+      // ------ rotate ------ //
       if (keyIsDown(81))
         Game.player.rotation--;
       if (keyIsDown(69))
         Game.player.rotation++;
     }
+
+    // ------ GUI events ------ //
+    this.mainMenu.start.mousePressed(()=>{                  // game start
+      this.gameStart = true;
+      this.loadScene = true;
+      this.windowS.onDetach(this.mainMenu);
+    })
+
+    this.settingScene.backToMenu.mousePressed(()=>{         // navigate to main menu
+      Game.gamePause=true;
+      Game.player.hp = Game.player.maxHP;
+      this.gameRestart = true;
+      this.loadingScence.done = false;
+      this.settingPause = false;
+      this.upgradePause = false;
+      this.mainGameScene.setting.toggle = false;
+      this.windowS.onAttach(this.mainMenu);
+      this.windowS.onDetach(this.mainGameScene);
+      this.windowS.onDetach(this.settingScene);
+    })
+
+    this.mainGameScene.setting.mousePressed(()=>{           // open setting menu
+      menuSelect.play();
+      this.mainGameScene.setting.toggle = !this.mainGameScene.setting.toggle;
+      this.settingPause = !this.settingPause;
+      if(this.mainGameScene.setting.toggle)
+      {
+        this.windowS.onAttach(this.settingScene);
+        Game.gamePause = true;
+      }
+      else
+      {
+        this.windowS.onDetach(this.settingScene);
+        Game.gamePause = false;
+      }
+      this.windowS.onAttach(this.mainGameScene);
+    })
+
+    this.mainGameScene.upgrade.mousePressed(()=>{           // open upgarde menu
+      Game.player.setCooldown(10);
+
+      this.mainGameScene.upgrade.toggle = !this.mainGameScene.upgrade.toggle;
+      this.upgradePause = !this.upgradePause;
+      if(this.mainGameScene.upgrade.toggle)
+      {
+        this.windowS.onAttach(this.upgradeMenu);
+        Game.gamePause = true;
+      }
+      else
+      {
+        this.windowS.onDetach(this.upgradeMenu);
+        Game.gamePause = false;
+      }
+      this.windowS.onAttach(this.mainGameScene);
+    })
   }
 
   update()
   {
-    this.windowS.onAttach(this.mainMenu);
-    this.windowS.onAttach(this.mainGameScene);
-    // this.windowS.onDetach(this.mainMenu);
-    this.mainMenu.b1.mousePressed(()=>{Game.gamePause=!Game.gamePause})
+    // ------ entry point ------ //
+    if (!this.gameStart)
+      this.windowS.onAttach(this.mainMenu);
+
+    // ------ loading scene ------ //
+    if (this.loadScene)
+    {
+      this.windowS.onAttach(this.loadingScence);
+      if (this.loadingScence.done)
+      {
+        this.windowS.onDetach(this.loadingScence);
+        this.windowS.onAttach(this.mainGameScene);
+
+        Game.gamePause=false;
+        this.loadScene = false;
+        this.upgradePause = false;
+      }
+    }
+
+    // ------ scrolling background ------ //
+    if(!this.settingPause && !this.upgradePause)
+    {
+      this.bgy+=0.7*deltaTime/10;
+      if (this.bgy >= height-10)
+        this.bgy = 0;
+    }
+
+    // ----- game restart ------ //
+    if (this.gameRestart)
+    {
+      this.enemies = [];
+      this.playerBullets = [];
+      Game.player.posx = width/2-10;
+      Game.player.posy = height/2-30;
+      Game.player.width = 60;
+      Game.player.height = 120;
+    }
+    this.gameRestart = false;
+
+    if (this.windowS.scenes.length > 1)
+      Game.gamePause = true;
+
+    // ------  ------ //
+    // if (Game.player.hp == 0)
+    // {
+    //   this.windowS.onAttach(this.Leaderboard);
+    // }
+
+    // ------ save game state ------ //
+    this.settingScene.save.mousePressed(()=>{
+      this.save();
+    })
+
+    // ------ load game state ------ //
+    this.settingScene.load.mousePressed(()=>{
+      this.load();
+    })
+
+
     this.windowS.update();
+    // ------ the game ------ //
     if (!Game.gamePause)
     {
-      // for (let i = 0; i < t.length - 1; ++i)
-      // {
-      //   for (let j = i + 1; j < t.length; ++j)
-      //   {
-      //
-      //   }
-      // }
-
-        for (let enemy=0; enemy<this.enemies.length; ++enemy)
+      // ------ player collide with enemies ------ //
+      for (let enemy=0; enemy<this.enemies.length; ++enemy)
+        if (this.collide(Game.player.getVertices(), this.enemies[enemy].getVertices()))
         {
-          if (this.collide(Game.player.getVertices(), this.enemies[enemy].getVertices()))
-          {
-            print("collided")
-
-            Game.player.c = true;
-          }
-
-          // else Game.player.st = [255, 0, 0];
+          Game.player.c = true;
+          if (Game.player.hp != 0)
+            Game.player.hp-=20;
+          this.enemies.splice(this.enemies.indexOf(this.enemies[enemy]), 1);
         }
 
-
-      if (frameCount % 60 == 0)
+      // ------ player bullets collide with enemies bullets ------ //
+      for (let pb=0; pb<this.playerBullets.length; ++pb)
+        for (let enemy=0; enemy<this.enemies.length; ++enemy)
+          if (this.collide(this.playerBullets[pb].getVertices(), this.enemies[enemy].getVertices()))
+          {
+            this.enemies.splice(this.enemies.indexOf(this.enemies[enemy]), 1);
+            // this.playerBullets.splice(this.playerBullets.indexOf(this.playerBullets[pb]), 1);
+          }
+          
+      // ------ 50% chance of spawning enemies every 3 second ------ //
+      if (frameCount % (60*1) == 0)
       {
-        if (random() < 0.5)
+        if (random() < 0.8)
           this.enemies.push(new CSprite(random(30, width-30),0,30,60,"en1"));
       }
-// if (this.enemies.length < 1)
-//       this.enemies.push(new CSprite(random(30, width-30),300,30,60,"en1"));
 
+      // ------ update everything ------ //
       for (let en of this.enemies)
       {
         if (en.life > en.maxLife)
           this.enemies.splice(this.enemies.indexOf(en), 1);
         en.update();
       }
+      for (let pb of this.playerBullets)
+      {
+        if (pb.life > pb.maxLife)
+          this.playerBullets.splice(this.playerBullets.indexOf(pb), 1);
+        pb.update();
+      }
       Game.player.update();
-
     }
+  }
+
+  draw()
+  {
+    background(230);
+    image(bg, 0, this.bgy);
+    image(bg, 0, this.bgy-height+10);
+
+    for (let en of this.enemies)
+      en.draw();
+    for (let pb of this.playerBullets)
+      pb.draw();
+    Game.player.draw();
+    this.windowS.draw();
+  }
+
+  save()
+  {
+    let data = {};
+    data.player = Game.player;
+    data.enemies = this.enemies;
+    save(data, "data.json");
+  }
+
+  load()
+  {
+    this.enemies = [];
+    loadJSON("data.json", (data)=>{
+      Game.player.posx = data.player.posx;
+      Game.player.posy = data.player.posy;
+      Game.player.firerate = data.player.firerate;
+
+      for (let e=0; e<data.enemies.length; ++e)
+      {
+        this.enemies.push(new CSprite(data.enemies[e].posx, data.enemies[e].posy,30,60, data.enemies[e].type));
+        this.enemies[e].life = data.enemies[e].life;
+        this.enemies[e].hp = data.enemies[e].hp;
+        print(data);
+      }
+    });
   }
 
   collide(verticesA, verticesB)
@@ -148,20 +326,11 @@ class Game
     return [min, max];
   }
 
-  draw()
-  {
-    background(230);
-
-
-    this.windowS.draw();
-    for (let en of this.enemies)
-      en.draw();
-    Game.player.draw();
-  }
 }
 
 function keyPressed()
 {
-  if (keyCode === ESCAPE)
+  // ------ pause the game ------ //
+  if (keyCode == ESCAPE)
     Game.gameP();
 }

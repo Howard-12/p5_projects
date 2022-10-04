@@ -5,15 +5,20 @@ class Window
     this.scenes = [];
   }
 
-  // onAttach(scene, ...arg)
   onAttach(attachedS)
   {
     if (!this.scenes.includes(attachedS, 0))
+    {
       this.scenes.push(attachedS);
+      for (let button of attachedS.elements)
+        button.show();
+    }
   }
 
   onDetach(detachS)
   {
+    for (let button of detachS.elements)
+      button.hide();
     this.scenes.splice(this.scenes.indexOf(detachS), 1);
   }
 

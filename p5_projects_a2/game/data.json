@@ -1,0 +1,51 @@
+{
+  "player": {
+    "posx": 439.9199999988076,
+    "posy": 516.5699999988077,
+    "width": 55.96850000000001,
+    "height": 111.68045000000002,
+    "rotation": 0,
+    "speed": 0,
+    "life": 0,
+    "vertices": [],
+    "type": "player",
+    "st": [
+      255,
+      0,
+      0
+    ],
+    "c": false,
+    "dps": 10,
+    "firerate": 30,
+    "onCooldown": false,
+    "cooldown": 30,
+    "hp": 100,
+    "maxHP": 100
+  },
+  "enemies": [
+    {
+      "posx": 328.97260613375005,
+      "posy": 132,
+      "width": 30,
+      "height": 60,
+      "rotation": 0,
+      "speed": 0,
+      "life": 132,
+      "vertices": [],
+      "type": "en1",
+      "st": [
+        255,
+        0,
+        0
+      ],
+      "c": false,
+      "dps": 0,
+      "firerate": 30,
+      "onCooldown": false,
+      "cooldown": 30,
+      "hp": 100,
+      "maxHP": 100,
+      "maxLife": 850
+    }
+  ]
+}
