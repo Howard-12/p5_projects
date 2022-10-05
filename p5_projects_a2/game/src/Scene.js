@@ -51,13 +51,12 @@ class MainMenu
   {
     Game.gamePause = true;
 
-    this.nextShip.mousePressed(()=>{
-      zipclick.play();
-    })
-
-    this.preShip.mousePressed(()=>{
-      zipclick.play();
-    })
+    // this.nextShip.mousePressed(()=>{
+    // })
+    //
+    // this.preShip.mousePressed(()=>{
+    //   zipclick.play();
+    // })
 
     this.nextShip.mouseOver(()=>{
       this.nextShip.style("width", "17px");
@@ -206,9 +205,9 @@ class UpgradeMenu
     this.id = 2;
     this.elements = [];
 
-    this.b2 = createButton("Upgrade");
-    this.b2.hide();
-    this.elements.push(this.b2);
+    this.firerate = createButton("Upgrade");
+    this.firerate.hide();
+    this.elements.push(this.firerate);
   }
 
   update()
@@ -218,8 +217,8 @@ class UpgradeMenu
 
   draw()
   {
-    this.b2.show();
-    this.b2.position(width-230, 370);
+    this.firerate.show();
+    this.firerate.position(width-230, 370);
     push();
     noStroke();
 

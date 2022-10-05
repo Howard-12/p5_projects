@@ -53,16 +53,16 @@ class CSprite
         this.posy++;
         break;
       case "pb":
-        this.maxLife = 200;
-        this.life++;
-        this.posy-=3*deltaTime/10;
+        // this.maxLife = 200;
+        // this.life++;
+        // this.posy-=3*deltaTime/10;
         break;
     }
   }
 
-  setCooldown(value=10)
+  deCooldown(value=10)
   {
-    this.firerate = value;
+    this.firerate -= value;
   }
 
   addSpeed(xSpeed, ySpeed)
@@ -95,10 +95,10 @@ class CSprite
     fill(215, 0, 200);
     stroke(...this.st);
     strokeWeight(1);
-    circle(this.getVertices()[0]-this.posx, this.getVertices()[1]-this.posy, 5);
-    circle(this.getVertices()[2]-this.posx, this.getVertices()[3]-this.posy, 5);
-    circle(this.getVertices()[4]-this.posx, this.getVertices()[5]-this.posy, 5);
-    circle(this.getVertices()[6]-this.posx, this.getVertices()[7]-this.posy, 5);
+    // circle(this.getVertices()[0]-this.posx, this.getVertices()[1]-this.posy, 5);
+    // circle(this.getVertices()[2]-this.posx, this.getVertices()[3]-this.posy, 5);
+    // circle(this.getVertices()[4]-this.posx, this.getVertices()[5]-this.posy, 5);
+    // circle(this.getVertices()[6]-this.posx, this.getVertices()[7]-this.posy, 5);
 
     switch (this.type)
     {
@@ -116,30 +116,6 @@ class CSprite
 
     pop();
   }
-
-  // setPlayerSkin(type)
-  // {
-  //   this.playerSkinType = type;
-  // }
-  //
-  // playerSkin()
-  // {
-  //   switch (this.playerSkinType)
-  //   {
-  //     case 0:
-  //       noStroke();
-  //       fill("black");
-  //
-  //       rect(0, 0, this.width, this.height, 20);
-  //       break;
-  //     case 1:
-  //       rect(0, 0, this.width, this.height, 40);
-  //       break;
-  //     case 2:
-  //       rect(0, 0, this.width, this.height, 60);
-  //       break;
-  //   }
-  // }
  }
 
 class Player extends CSprite
@@ -194,10 +170,14 @@ class Player extends CSprite
         rect(0, 0, this.width, this.height, 20);
         break;
       case 1:
-        rect(0, 0, this.width, this.height, 40);
+        noStroke();
+        fill("white");
+        rect(0, 0, this.width, this.height, 20);
         break;
       case 2:
-        rect(0, 0, this.width, this.height, 60);
+        noStroke();
+        fill("grey");
+        rect(0, 0, this.width, this.height, 20);
         break;
     }
   }
@@ -205,8 +185,55 @@ class Player extends CSprite
 
 class Bullet extends CSprite
 {
-  constructor()
+  constructor(posx, posy, width, height, bulletType)
   {
+    super(posx, posy, width, height);
     this.hit = false;
+    this.bulletType = bulletType;
+    this.dir = Game.player.rotation+90;
+  }
+
+  update()
+  {
+    switch (this.bulletType)
+    {
+      case "enb1":
+        this.maxLife = 850;
+        this.life++;
+        this.posy++;
+        break;
+      case "pb1":
+        this.maxLife = 200;
+        this.life++;
+        // this.posx+=-cos(this.dir)*(3*deltaTime/10);
+        // this.posy+=-sin(this.dir)*(3*deltaTime/10);
+        this.addSpeed(-cos(this.dir)*(3*deltaTime/10), -sin(this.dir)*(3*deltaTime/10));
+        // print(this.dir, Game.player.rotation)
+        break;
+    }
+  }
+
+  draw()
+  {
+    push();
+    rectMode(CENTER);
+    translate(this.posx, this.posy);
+    rotate(this.rotation);
+
+    fill(215, 0, 200);
+    stroke(...this.st);
+    strokeWeight(1);
+    rect(0, 0, this.width, this.height);
+    switch (this.bulleteType)
+    {
+      case "enb1":
+
+        break;
+      case "pb1":
+        rect(0, 0, this.width, this.height);
+
+        break;
+    }
+    pop();
   }
 }

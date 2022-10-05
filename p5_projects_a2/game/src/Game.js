@@ -50,7 +50,8 @@ class Game
         if (!Game.player.onCooldown)
         {
           Game.player.onCooldown = true;
-          this.playerBullets.push(new CSprite(Game.player.posx, Game.player.posy-50, 10, 10, "pb"));
+          this.playerBullets.push(new Bullet(Game.player.posx+cos(Game.player.rotation), (Game.player.posy)-sin(Game.player.rotation), 10, 10, "pb1"));
+          // this.playerBullets.push(new CSprite(Game.player.posx, Game.player.posy-50, 10, 10, "pb"));
         }
 
       // ------ rotate ------ //
@@ -65,6 +66,19 @@ class Game
       this.gameStart = true;
       this.loadScene = true;
       this.windowS.onDetach(this.mainMenu);
+    })
+
+    this.mainMenu.nextShip.mousePressed(()=>{
+      zipclick.play();
+      Game.player.playerSkinType++;
+      Game.player.playerSkinType %= 3;
+    })
+
+    this.mainMenu.nextShip.mousePressed(()=>{
+      zipclick.play();
+      Game.player.playerSkinType++;
+      Game.player.playerSkinType %= 3;
+
     })
 
     this.settingScene.backToMenu.mousePressed(()=>{         // navigate to main menu
@@ -98,7 +112,6 @@ class Game
     })
 
     this.mainGameScene.upgrade.mousePressed(()=>{           // open upgarde menu
-      Game.player.setCooldown(10);
 
       this.mainGameScene.upgrade.toggle = !this.mainGameScene.upgrade.toggle;
       this.upgradePause = !this.upgradePause;
@@ -114,7 +127,13 @@ class Game
       }
       this.windowS.onAttach(this.mainGameScene);
     })
+
+    this.upgradeMenu.firerate.mousePressed(()=>{
+      Game.player.deCooldown(10);
+    })
   }
+
+
 
   update()
   {
@@ -199,7 +218,7 @@ class Game
             this.enemies.splice(this.enemies.indexOf(this.enemies[enemy]), 1);
             // this.playerBullets.splice(this.playerBullets.indexOf(this.playerBullets[pb]), 1);
           }
-          
+
       // ------ 50% chance of spawning enemies every 3 second ------ //
       if (frameCount % (60*1) == 0)
       {
@@ -253,13 +272,13 @@ class Game
       Game.player.posx = data.player.posx;
       Game.player.posy = data.player.posy;
       Game.player.firerate = data.player.firerate;
+      Game.player.hp = data.player.hp;
 
       for (let e=0; e<data.enemies.length; ++e)
       {
         this.enemies.push(new CSprite(data.enemies[e].posx, data.enemies[e].posy,30,60, data.enemies[e].type));
         this.enemies[e].life = data.enemies[e].life;
         this.enemies[e].hp = data.enemies[e].hp;
-        print(data);
       }
     });
   }
