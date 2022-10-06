@@ -1,5 +1,6 @@
 const width = 600, height = 800;
 
+// ======================================= Custom sprite ======================================= //
 class CSprite
 {
   constructor(posx, posy, width, height, type="n")
@@ -15,7 +16,7 @@ class CSprite
     this.maxLife;
     this.vertices = [];
     this.type = type;
-    this.st = [255, 0, 0];
+    // this.st = [255, 0, 0];
     this.c = false;
     this.dps = 0;
     this.firerate = 30;
@@ -23,7 +24,6 @@ class CSprite
     this.cooldown = 30;
     this.hp = 100;
     this.maxHP = 100;
-    // this.playerSkinType = 0;
   }
 
   update()
@@ -93,7 +93,7 @@ class CSprite
     rotate(this.rotation);
 
     fill(215, 0, 200);
-    stroke(...this.st);
+    // stroke(...this.st);
     strokeWeight(1);
     // circle(this.getVertices()[0]-this.posx, this.getVertices()[1]-this.posy, 5);
     // circle(this.getVertices()[2]-this.posx, this.getVertices()[3]-this.posy, 5);
@@ -102,22 +102,18 @@ class CSprite
 
     switch (this.type)
     {
-      case "player":
-        // this.playerSkin();
-
-        break;
       case "en1":
         rect(0, 0, this.width, this.height);
         break;
       case "pb":
-        rect(0, 0, this.width, this.height);
+        // rect(0, 0, this.width, this.height);
         break;
     }
 
     pop();
   }
  }
-
+// ======================================= Player ======================================= //
 class Player extends CSprite
 {
   constructor(posx, posy, width, height)
@@ -129,11 +125,11 @@ class Player extends CSprite
   update()
   {
     this.dps = 10;
-    if (this.c)
-      this.st = [0, 0, 255];
-    else
-      this.st = [255, 0, 0];
-    this.c = false;
+    // if (this.c)
+    //   this.st = [0, 0, 255];
+    // else
+    //   this.st = [255, 0, 0];
+    // this.c = false;
 
     if (this.onCooldown)
       this.cooldown--;
@@ -182,7 +178,7 @@ class Player extends CSprite
     }
   }
 }
-
+// ======================================= Bullet ======================================= //
 class Bullet extends CSprite
 {
   constructor(posx, posy, width, height, bulletType)
@@ -198,17 +194,13 @@ class Bullet extends CSprite
     switch (this.bulletType)
     {
       case "enb1":
-        this.maxLife = 850;
-        this.life++;
-        this.posy++;
+
         break;
       case "pb1":
+        this.speed = 2;
         this.maxLife = 200;
         this.life++;
-        // this.posx+=-cos(this.dir)*(3*deltaTime/10);
-        // this.posy+=-sin(this.dir)*(3*deltaTime/10);
-        this.addSpeed(-cos(this.dir)*(3*deltaTime/10), -sin(this.dir)*(3*deltaTime/10));
-        // print(this.dir, Game.player.rotation)
+        this.addSpeed(-cos(this.dir)*(3*deltaTime/10)*this.speed, -sin(this.dir)*(3*deltaTime/10)*this.speed);
         break;
     }
   }
@@ -218,10 +210,10 @@ class Bullet extends CSprite
     push();
     rectMode(CENTER);
     translate(this.posx, this.posy);
-    rotate(this.rotation);
+    rotate(this.dir);
 
     fill(215, 0, 200);
-    stroke(...this.st);
+    // stroke(...this.st);
     strokeWeight(1);
     rect(0, 0, this.width, this.height);
     switch (this.bulleteType)
@@ -234,6 +226,49 @@ class Bullet extends CSprite
 
         break;
     }
+    pop();
+  }
+}
+// ======================================= Enemy ======================================= //
+class Enemy extends CSprite
+{
+  constructor(posx, posy, width, height, enemyType)
+  {
+    super(posx, posy, width, height);
+    this.enemyType = enemyType;
+  }
+
+  update()
+  {
+    switch (this.enemyType)
+    {
+      case "en1":
+        this.maxLife = 850;
+        this.life++;
+        this.posy++;
+        break;
+    }
+  }
+
+  draw()
+  {
+    push();
+    rectMode(CENTER);
+    translate(this.posx, this.posy);
+    rotate(this.dir);
+
+    fill(215, 0, 200);
+    // stroke(...this.st);
+    strokeWeight(1);
+    rect(0, 0, this.width, this.height);
+
+    switch (this.enemyType)
+    {
+      case "en1":
+
+        break;
+    }
+
     pop();
   }
 }

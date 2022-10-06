@@ -10,7 +10,7 @@ class Game
     this.mainMenu = new MainMenu();
     this.mainGameScene = new MainGameScene();
     this.loadingScence = new LoadingScene();
-    this.settingScene = new SettingMenu();
+    this.settingScene = new GameSettingMenu();
     this.upgradeMenu = new UpgradeMenu();
 
     this.enemies = [];
@@ -22,9 +22,9 @@ class Game
   }
 
   static player = new Player(width/2-10, height/2-30, 60, 120);
-  // static player = new CSprite(width/2-10, height/2-30, 60, 120, "player");
   static playerScore = 0;
   static playerMoney = 0;
+  static gameWave = 1;
   static gamePause = false;
   static gameP()
   {
@@ -65,20 +65,23 @@ class Game
     this.mainMenu.start.mousePressed(()=>{                  // game start
       this.gameStart = true;
       this.loadScene = true;
+      // this.mainMenu.fireSparks.removeSprites();
       this.windowS.onDetach(this.mainMenu);
     })
 
-    this.mainMenu.nextShip.mousePressed(()=>{
+    this.mainMenu.nextShip.mousePressed(()=>{               // choose next ship
       zipclick.play();
       Game.player.playerSkinType++;
       Game.player.playerSkinType %= 3;
+      print(Game.player.playerSkinType)
+
     })
 
-    this.mainMenu.nextShip.mousePressed(()=>{
+    this.mainMenu.preShip.mousePressed(()=>{                // choose next ship
       zipclick.play();
-      Game.player.playerSkinType++;
-      Game.player.playerSkinType %= 3;
-
+      if (Game.player.playerSkinType <= 0)
+        Game.player.playerSkinType = 3;
+      Game.player.playerSkinType--;
     })
 
     this.settingScene.backToMenu.mousePressed(()=>{         // navigate to main menu
@@ -173,6 +176,7 @@ class Game
       Game.player.posy = height/2-30;
       Game.player.width = 60;
       Game.player.height = 120;
+      Game.player.firerate = 30;
     }
     this.gameRestart = false;
 

@@ -14,10 +14,10 @@ function preload()
   bg = loadImage("./texture/water4.png", img=>{
     img.resize(width,height);
   });
-  // playerTexture = loadImage("./texture/ship_large_body.png", img=>{
-  //   img.resize(img.width/1.7, img.height/1.7);
-  //   // img.
-  // });
+  playerTexture = loadImage("./texture/ship_large_body.png", img=>{
+    img.resize(img.width/1.7, img.height/1.7);
+
+  });
   titleFont = loadFont("./font/Quarterback-6YrgD.otf");
   battleSong = loadSound("./sounds/bassline_SpringEdit1DX7BASS.ogg");
   battleSong1 = loadSound("./sounds/BattleInTheWinter.mp3");
@@ -25,7 +25,7 @@ function preload()
   menuSelect = loadSound("./sounds/MenuSelectionClick.wav");
   zipclick = loadSound("./sounds/zipclick.flac");
 }
-
+let s;
 function setup()
 {
   createCanvas(width, height);
@@ -33,8 +33,8 @@ function setup()
 
   game = new Game();
 }
-let diir = 0;
-let an = 0;
+
+
 function draw()
 {
   if (battleSong.isPlaying() == false)
@@ -46,18 +46,5 @@ function draw()
   game.update();
   game.draw();
 
-// push()
-//   translate(width/2, height/2);
-//   fill("blue");
-//   rect(0, 0, 50, 50);
-//   fill("red");
-//   // rect(cos(diir*PI/180)*100, -sin(diir*PI/180)*100, 50, 50);
-//   rect(50*cos(diir), 50*-sin(diir), 50, 50);
-//   // fill("red");
-//   // rect(cos(90*PI/180)*100, -sin(0*PI/180)*100, 40, 40);
-//   // fill("red");
-//   // rect(cos(180*PI/180)*100, -sin(0*PI/180)*100, 30, 30);
-//   pop()
-// diir++;
-// an++;
+
 }

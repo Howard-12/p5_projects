@@ -1,3 +1,4 @@
+// ======================================= Main menu ======================================= //
 class MainMenu
 {
   constructor()
@@ -45,18 +46,21 @@ class MainMenu
     this.start.hide();
 
     this.title = createDiv();
+
+    this.fireSparks = new Group();
+    for(let sp=0; sp<100; ++sp)
+    {
+      let spark = new Sprite(random(0, width), random(0, height), 5, random(5,30));
+      // spark.addImage(playerTexture);
+      this.fireSparks.add(spark);
+    }
+
+    print(this.fireSparks);
   }
 
   update()
   {
     Game.gamePause = true;
-
-    // this.nextShip.mousePressed(()=>{
-    // })
-    //
-    // this.preShip.mousePressed(()=>{
-    //   zipclick.play();
-    // })
 
     this.nextShip.mouseOver(()=>{
       this.nextShip.style("width", "17px");
@@ -93,6 +97,9 @@ class MainMenu
     this.preShip.position(20, height/2-50);
     this.start.position(width/2-45, height-280);
 
+    this.fireSparks.draw();
+    drawSprites();
+
     push();
     stroke(255);
     textFont(titleFont);
@@ -102,12 +109,12 @@ class MainMenu
   }
 }
 
+// ======================================= Game Scene ======================================= //
 class MainGameScene
 {
   constructor()
   {
     this.id = 2;
-    // this.toggle = true;
     this.elements = [];
 
     this.setting = createElement("i");
@@ -151,17 +158,19 @@ class MainGameScene
     this.setting.position(width-40, 10);
     this.upgrade.position(width-40, height/2-40);
 
+    let wave = Game.gameWave;
+    stroke("black");
+    fill("white");
     textSize(20);
+    text("Wave  " + wave, width/2-50, height-15);
     fill("red");
     this.heart.position(25, height-32);
     rect(50, height-30, Game.player.hp, 10);
-    // if (Game.player.hp != 0)
-    //   Game.player.hp--;
     pop();
   }
 }
-
-class SettingMenu
+// ======================================= Game setting ======================================= //
+class GameSettingMenu
 {
   constructor()
   {
@@ -197,7 +206,7 @@ class SettingMenu
     pop();
   }
 }
-
+// ======================================= Upgrade menu ======================================= //
 class UpgradeMenu
 {
   constructor()
@@ -227,7 +236,7 @@ class UpgradeMenu
     pop();
   }
 }
-
+// ======================================= Loading scene ======================================= //
 class LoadingScene
 {
   constructor()
