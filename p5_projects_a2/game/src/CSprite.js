@@ -30,23 +30,6 @@ class CSprite
   {
     switch (this.type)
     {
-      case "player":
-        // this.dps = 10;
-        // if (this.c)
-        //   this.st = [0, 0, 255];
-        // else
-        //   this.st = [255, 0, 0];
-        // this.c = false;
-        //
-        // if (this.onCooldown)
-        //   this.cooldown--;
-        // if (this.cooldown < 0)
-        // {
-        //   this.cooldown = this.firerate;
-        //   this.onCooldown = false;
-        // }
-
-        break;
       case "en1":
         this.maxLife = 850;
         this.life++;
@@ -247,6 +230,9 @@ class Enemy extends CSprite
         this.life++;
         this.posy++;
         break;
+      case "en2":
+
+        break;
     }
   }
 
@@ -265,6 +251,9 @@ class Enemy extends CSprite
     switch (this.enemyType)
     {
       case "en1":
+
+        break;
+      case "en2":
 
         break;
     }

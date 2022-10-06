@@ -55,7 +55,6 @@ class MainMenu
       this.fireSparks.add(spark);
     }
 
-    print(this.fireSparks);
   }
 
   update()
@@ -88,6 +87,8 @@ class MainMenu
     this.setting.mouseOut(()=>{
       this.setting.class("fa fa-gear");
     })
+
+    
   }
 
   draw()

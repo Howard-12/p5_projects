@@ -25,6 +25,8 @@ class Game
   static playerScore = 0;
   static playerMoney = 0;
   static gameWave = 1;
+  static nextWave = 10;
+  static defeatEnemeyCount = 0;                            // defeatEnemeyCount
   static gamePause = false;
   static gameP()
   {
@@ -73,11 +75,10 @@ class Game
       zipclick.play();
       Game.player.playerSkinType++;
       Game.player.playerSkinType %= 3;
-      print(Game.player.playerSkinType)
 
     })
 
-    this.mainMenu.preShip.mousePressed(()=>{                // choose next ship
+    this.mainMenu.preShip.mousePressed(()=>{                // choose previous ship
       zipclick.play();
       if (Game.player.playerSkinType <= 0)
         Game.player.playerSkinType = 3;
@@ -214,19 +215,28 @@ class Game
           this.enemies.splice(this.enemies.indexOf(this.enemies[enemy]), 1);
         }
 
-      // ------ player bullets collide with enemies bullets ------ //
+      // ------ player bullets collide with enemies ------ //
       for (let pb=0; pb<this.playerBullets.length; ++pb)
         for (let enemy=0; enemy<this.enemies.length; ++enemy)
           if (this.collide(this.playerBullets[pb].getVertices(), this.enemies[enemy].getVertices()))
           {
             this.enemies.splice(this.enemies.indexOf(this.enemies[enemy]), 1);
+            Game.defeatEnemeyCount++;
             // this.playerBullets.splice(this.playerBullets.indexOf(this.playerBullets[pb]), 1);
           }
 
-      // ------ 50% chance of spawning enemies every 3 second ------ //
-      if (frameCount % (60*1) == 0)
+      // ------ wave system ------ //
+      if (Game.defeatEnemeyCount > Game.nextWave)
       {
-        if (random() < 0.8)
+        Game.gameWave++;
+        Game.nextWave += 10;
+        Game.defeatEnemeyCount = 0;
+      }
+
+      // ------ 50% chance of spawning enemies every 3 second ------ //
+      if (frameCount % (20*1) == 0)
+      {
+        if (random() < 1.8)
           this.enemies.push(new CSprite(random(30, width-30),0,30,60,"en1"));
       }
 
