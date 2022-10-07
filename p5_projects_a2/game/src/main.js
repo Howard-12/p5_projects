@@ -10,6 +10,7 @@ let zipclick;
 let startclick;
 let fire;
 
+let score;
 function preload()
 {
   bg = loadImage("./texture/water4.png", img=>{
@@ -26,14 +27,16 @@ function preload()
   menuSelect = loadSound("./sounds/MenuSelectionClick.wav");
   zipclick = loadSound("./sounds/zipclick.flac");
   startclick = loadSound("./sounds/interface/click.ogg");
+  score = loadStrings("./score.txt");
 }
-let s;
+let s = {"s": 1};
 function setup()
 {
   createCanvas(width, height);
   angleMode(DEGREES);
 
   game = new Game();
+
 }
 
 

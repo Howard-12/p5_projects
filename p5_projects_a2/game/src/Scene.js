@@ -144,7 +144,7 @@ class MainMenu
     this.right.style("cursor", "cursor: pointer;");
     this.right.hide();
 
-    this.title = createDiv();
+    // this.title = createDiv();
 
     this.fireSparks = new Group();
     for(let sp=0; sp<30; ++sp)
@@ -238,17 +238,17 @@ class MenuSetting
     this.elements.push(this.volume);
     this.volume.hide();
 
-    this.backToMenu = createButton("Back to menu");
-    this.elements.push(this.backToMenu);
-    this.backToMenu.hide();
-
-    this.save = createButton("Save");
-    this.elements.push(this.save);
-    this.save.hide();
-
-    this.load = createButton("Load");
-    this.elements.push(this.load);
-    this.load.hide();
+    // this.backToMenu = createButton("Back to menu");
+    // this.elements.push(this.backToMenu);
+    // this.backToMenu.hide();
+    //
+    // this.save = createButton("Save");
+    // this.elements.push(this.save);
+    // this.save.hide();
+    //
+    // this.load = createButton("Load");
+    // this.elements.push(this.load);
+    // this.load.hide();
 
   }
 
@@ -262,9 +262,9 @@ class MenuSetting
   {
     push();
     this.volume.position(width-240, 100);
-    this.backToMenu.position(width-250, 270);
-    this.save.position(width-300, 220);
-    this.load.position(width-140, 220);
+    // this.backToMenu.position(width-250, 270);
+    // this.save.position(width-300, 220);
+    // this.load.position(width-140, 220);
 
     noStroke();
     rect(width-350, 20, 300, 300, 20);
@@ -443,5 +443,65 @@ class LoadingScene
     noStroke();
 
     pop();
+  }
+}
+// ======================================= Leaderboard menu ======================================= //
+class LeaderboardMenu
+{
+  constructor()
+  {
+    this.elements = [];
+
+    this.menu = createButton("Back to Menu");
+    this.elements.push(this.menu);
+    this.menu.position(width/2-100, height-65);
+    this.menu.style("text-align", "center");
+    this.menu.style("display", "inline-block");
+    this.menu.style("margin", "5px");
+    this.menu.style("font-weight", "bold");
+    this.menu.style("font-size", "20px");
+    this.menu.style("padding", "5px 10px 5px 10px");
+    this.menu.style("background-color", "lightgray");
+    this.menu.style("text-shadow", "-1px -1px black, 1px 1px white");
+    this.menu.style("color", "gray");
+    this.menu.style("-webkit-border-radius", "7px");
+    this.menu.style("-moz-border-radius", "7px");
+    this.menu.style("-o-border-radius", "7px");
+    this.menu.style("border-radius", "7px");
+    this.menu.style("border-color", "transparent");
+    this.menu.style("box-shadow", "0 .1em gray");
+    this.menu.style("cursor", "cursor: pointer;");
+    this.menu.hide();
+  }
+
+  update()
+  {
+    this.menu.mouseOver(()=>{
+      this.menu.position(width/2-101, height-66);
+
+      this.menu.style("font-size", "21px");
+    })
+
+    this.menu.mouseOut(()=>{
+      this.menu.position(width/2-100, height-65);
+      this.menu.style("font-size", "20px");
+    })
+  }
+
+  draw()
+  {
+    background(bg);
+    textSize(30);
+    textFont(titleFont);
+    text("LeaderBoard", width/2-170, 100);
+    textSize(20);
+    fill("red");
+    text(Game.defeatEnemeyCount, 300, 200);
+    text(score[0], 430, 280);
+
+    fill("black");
+    text("Score:", 130, 200);
+    text("Heighest Score:", 130, 280);
+
   }
 }

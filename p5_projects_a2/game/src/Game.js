@@ -13,6 +13,7 @@ class Game
     this.loadingScence = new LoadingScene();
     this.settingScene = new GameSettingMenu();
     this.upgradeMenu = new UpgradeMenu();
+    this.leaderboardMenu = new LeaderboardMenu();
 
     this.enemies = [];
     this.playerBullets = [];
@@ -75,7 +76,6 @@ class Game
       zipclick.play();
       Game.player.playerSkinType++;
       Game.player.playerSkinType %= 3;
-
     })
 
     this.mainMenu.preShip.mousePressed(()=>{                // choose previous ship
@@ -107,9 +107,10 @@ class Game
       this.settingPause = false;
       this.upgradePause = false;
       this.mainGameScene.setting.toggle = false;
-      this.windowS.onAttach(this.mainMenu);
-      this.windowS.onDetach(this.mainGameScene);
-      this.windowS.onDetach(this.settingScene);
+      // this.windowS.onAttach(this.mainMenu);
+      // this.windowS.onDetach(this.mainGameScene);
+      // this.windowS.onDetach(this.settingScene);
+      this.windowS.deAttach(this.mainMenu);
     })
 
     this.mainGameScene.setting.mousePressed(()=>{           // open setting menu
@@ -148,6 +149,12 @@ class Game
 
     this.upgradeMenu.firerate.mousePressed(()=>{
       Game.player.deCooldown(10);
+    })
+
+    this.leaderboardMenu.menu.mousePressed(()=>{
+      this.gameRestart = true;
+      this.windowS.deAttach(this.mainMenu);
+      print(this.windowS);
     })
   }
 
@@ -196,12 +203,15 @@ class Game
     if (this.windowS.scenes.length > 1)
       Game.gamePause = true;
 
-    // ------  ------ //
-    // if (Game.player.hp == 0)
-    // {
-    //   this.windowS.onAttach(this.Leaderboard);
-      this.windowS.onDetach(this.)
-    // }
+    // ------ game over ------ //
+    if (Game.player.hp == 0)
+    {
+      Game.player.hp = Game.player.maxHP;
+      this.windowS.deAttach(this.leaderboardMenu);
+      if (Game.defeatEnemeyCount > parseInt(score[0]))
+        saveStrings([str(Game.defeatEnemeyCount)], "score.txt");
+      // print(parseInt(score[0]));
+    }
 
     // ------ save game state ------ //
     this.settingScene.save.mousePressed(()=>{
@@ -224,7 +234,7 @@ class Game
         {
           Game.player.c = true;
           if (Game.player.hp != 0)
-            Game.player.hp-=20;
+            Game.player.hp-=100;
           this.enemies.splice(this.enemies.indexOf(this.enemies[enemy]), 1);
         }
 

@@ -15,8 +15,11 @@ class Window
     }
   }
 
-  DeAttach(attachedS)
+  deAttach(attachedS)
   {
+    for (let scene of this.scenes)
+      for (let button of scene.elements)
+        button.hide();
     this.scenes = [];
     if (!this.scenes.includes(attachedS, 0))
     {

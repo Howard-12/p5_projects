@@ -103,6 +103,7 @@ class Player extends CSprite
   {
     super(posx, posy, width, height);
     this.playerSkinType = 0;
+    this.maxHP = 100;
   }
 
   update()
