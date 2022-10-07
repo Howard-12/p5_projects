@@ -15,6 +15,17 @@ class Window
     }
   }
 
+  DeAttach(attachedS)
+  {
+    this.scenes = [];
+    if (!this.scenes.includes(attachedS, 0))
+    {
+      this.scenes.push(attachedS);
+      for (let button of attachedS.elements)
+        button.show();
+    }
+  }
+
   onDetach(detachS)
   {
     for (let button of detachS.elements)

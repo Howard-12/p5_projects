@@ -7,15 +7,16 @@ let battleSong1;
 let battleSong2;
 let menuSelect;
 let zipclick;
-let playerTexture;
+let startclick;
+let fire;
 
 function preload()
 {
   bg = loadImage("./texture/water4.png", img=>{
     img.resize(width,height);
   });
-  playerTexture = loadImage("./texture/ship_large_body.png", img=>{
-    img.resize(img.width/1.7, img.height/1.7);
+  fire = loadImage("./texture/fire1.png", img=>{
+    img.resize(8, 8);
 
   });
   titleFont = loadFont("./font/Quarterback-6YrgD.otf");
@@ -24,6 +25,7 @@ function preload()
   battleSong2 = loadSound("./sounds/FinalBossBattle6V1.WAV");
   menuSelect = loadSound("./sounds/MenuSelectionClick.wav");
   zipclick = loadSound("./sounds/zipclick.flac");
+  startclick = loadSound("./sounds/interface/click.ogg");
 }
 let s;
 function setup()
@@ -40,7 +42,7 @@ function draw()
   if (battleSong.isPlaying() == false)
     battleSong.play();
 
-  battleSong.setVolume(0.5);
+  // battleSong.setVolume(0.5);
   zipclick.setVolume(1);
   game.events();
   game.update();

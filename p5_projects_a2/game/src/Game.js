@@ -8,6 +8,7 @@ class Game
     this.settingPause = false;
     this.windowS = new Window();
     this.mainMenu = new MainMenu();
+    this.menuSetting = new MenuSetting();
     this.mainGameScene = new MainGameScene();
     this.loadingScence = new LoadingScene();
     this.settingScene = new GameSettingMenu();
@@ -18,15 +19,14 @@ class Game
 
     this.scoreCount = 0;
     this.bgy = 0;
-
   }
 
   static player = new Player(width/2-10, height/2-30, 60, 120);
   static playerScore = 0;
-  static playerMoney = 0;
+  static playerCurrency = 0;
   static gameWave = 1;
   static nextWave = 10;
-  static defeatEnemeyCount = 0;                            // defeatEnemeyCount
+  static defeatEnemeyCount = 0;
   static gamePause = false;
   static gameP()
   {
@@ -53,7 +53,6 @@ class Game
         {
           Game.player.onCooldown = true;
           this.playerBullets.push(new Bullet(Game.player.posx+cos(Game.player.rotation), (Game.player.posy)-sin(Game.player.rotation), 10, 10, "pb1"));
-          // this.playerBullets.push(new CSprite(Game.player.posx, Game.player.posy-50, 10, 10, "pb"));
         }
 
       // ------ rotate ------ //
@@ -65,6 +64,7 @@ class Game
 
     // ------ GUI events ------ //
     this.mainMenu.start.mousePressed(()=>{                  // game start
+      startclick.play();
       this.gameStart = true;
       this.loadScene = true;
       // this.mainMenu.fireSparks.removeSprites();
@@ -83,6 +83,20 @@ class Game
       if (Game.player.playerSkinType <= 0)
         Game.player.playerSkinType = 3;
       Game.player.playerSkinType--;
+    })
+
+    this.mainMenu.setting.mousePressed(()=>{                // main menu setting menu
+      this.mainMenu.setting.toggle = !this.mainMenu.setting.toggle;
+      if(this.mainMenu.setting.toggle)
+      {
+        this.windowS.onAttach(this.menuSetting);
+        Game.gamePause = true;
+      }
+      else
+      {
+        this.windowS.onDetach(this.menuSetting);
+        Game.gamePause = false;
+      }
     })
 
     this.settingScene.backToMenu.mousePressed(()=>{         // navigate to main menu
@@ -137,8 +151,6 @@ class Game
     })
   }
 
-
-
   update()
   {
     // ------ entry point ------ //
@@ -188,6 +200,7 @@ class Game
     // if (Game.player.hp == 0)
     // {
     //   this.windowS.onAttach(this.Leaderboard);
+      this.windowS.onDetach(this.)
     // }
 
     // ------ save game state ------ //
@@ -222,6 +235,7 @@ class Game
           {
             this.enemies.splice(this.enemies.indexOf(this.enemies[enemy]), 1);
             Game.defeatEnemeyCount++;
+            Game.playerCurrency+=10;
             // this.playerBullets.splice(this.playerBullets.indexOf(this.playerBullets[pb]), 1);
           }
 
@@ -287,6 +301,7 @@ class Game
       Game.player.posy = data.player.posy;
       Game.player.firerate = data.player.firerate;
       Game.player.hp = data.player.hp;
+      Game.player.rotation = data.player.rotation;
 
       for (let e=0; e<data.enemies.length; ++e)
       {
@@ -308,10 +323,7 @@ class Game
 
       let edgeX = vbX-vaX;
       let edgeY = vbY-vaY;
-      // let edgeX = Math.abs(vbX-vaX);
-      // let edgeY = Math.abs(vbY-vaY);
       let axis = [-edgeY, edgeX];
-      // print(axis);
       let vA = this.projectVertices(verticesA, axis);
       let vB = this.projectVertices(verticesB, axis);
 
@@ -328,8 +340,8 @@ class Game
       let vbX = verticesB[(i+2) % verticesA.length];
       let vbY = verticesB[(i+3) % verticesA.length];
 
-      let edgeX = Math.abs(vbX-vaX);
-      let edgeY = Math.abs(vbY-vaY);
+      let edgeX = vbX-vaX;
+      let edgeY = vbY-vaY;
       let axis = [-edgeY, edgeX];
 
       let vA = this.projectVertices(verticesA, axis);
@@ -351,14 +363,11 @@ class Game
     {
       let v = [vertices[i], vertices[i+1]];
       let projection = v[0]*axis[0] + v[1]*axis[1];
-      // print(vertices[0]);
       if (projection < min) min = projection;
       if (projection > max) max = projection;
     }
-    // print(min, max);
     return [min, max];
   }
-
 }
 
 function keyPressed()

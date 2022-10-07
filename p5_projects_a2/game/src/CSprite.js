@@ -146,17 +146,17 @@ class Player extends CSprite
         noStroke();
         fill("black");
 
-        rect(0, 0, this.width, this.height, 20);
+        rect(0, 0, this.width, this.height, 10);
         break;
       case 1:
         noStroke();
         fill("white");
-        rect(0, 0, this.width, this.height, 20);
+        rect(0, 0, this.width, this.height, 10);
         break;
       case 2:
         noStroke();
         fill("grey");
-        rect(0, 0, this.width, this.height, 20);
+        rect(0, 0, this.width, this.height, 10);
         break;
     }
   }

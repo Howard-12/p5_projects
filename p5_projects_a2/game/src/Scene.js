@@ -41,17 +41,117 @@ class MainMenu
 
     this.start = createButton("Start");
     this.elements.push(this.start);
-    this.start.style("width", "70px");
-    this.start.style("height", "30px");
+    this.start.position(width/2-60, height-280);
+    this.start.style("text-align", "center");
+    this.start.style("display", "inline-block");
+    this.start.style("margin", "5px");
+    this.start.style("font-weight", "bold");
+    this.start.style("font-size", "30px");
+    this.start.style("padding", "5px 10px 5px 10px");
+    this.start.style("background-color", "lightgray");
+    this.start.style("text-shadow", "-1px -1px black, 1px 1px white");
+    this.start.style("color", "gray");
+    this.start.style("-webkit-border-radius", "7px");
+    this.start.style("-moz-border-radius", "7px");
+    this.start.style("-o-border-radius", "7px");
+    this.start.style("border-radius", "7px");
+    this.start.style("border-color", "transparent");
+    this.start.style("box-shadow", "0 .1em gray");
+    this.start.style("cursor", "cursor: pointer;");
     this.start.hide();
+
+    this.up = createButton("&#8593");
+    this.elements.push(this.up);
+    this.up.position(60, height-101);
+    this.up.style("text-align", "center");
+    this.up.style("display", "inline-block");
+    this.up.style("margin", "5px");
+    this.up.style("font-weight", "bold");
+    this.up.style("font-size", "15px");
+    this.up.style("padding", "3px 6px 3px 6px");
+    this.up.style("background-color", "lightgray");
+    this.up.style("text-shadow", "1px 1px white");
+    this.up.style("color", "gray");
+    this.up.style("-webkit-border-radius", "7px");
+    this.up.style("-moz-border-radius", "7px");
+    this.up.style("-o-border-radius", "7px");
+    this.up.style("border-radius", "7px");
+    this.up.style("border-color", "transparent");
+    this.up.style("box-shadow", "0 .1em gray");
+    this.up.style("cursor", "cursor: pointer;");
+    this.up.hide();
+
+    this.left = createButton("&#8592;");
+    this.elements.push(this.left);
+    this.left.position(30, height-70);
+    this.left.style("text-align", "center");
+    this.left.style("display", "inline-block");
+    this.left.style("margin", "5px");
+    this.left.style("font-weight", "bold");
+    this.left.style("font-size", "15px");
+    this.left.style("padding", "3px 4px 3px 4px");
+    this.left.style("background-color", "lightgray");
+    this.left.style("text-shadow", "1px 1px white");
+    this.left.style("color", "gray");
+    this.left.style("-webkit-border-radius", "7px");
+    this.left.style("-moz-border-radius", "7px");
+    this.left.style("-o-border-radius", "7px");
+    this.left.style("border-radius", "7px");
+    this.left.style("border-color", "transparent");
+    this.left.style("box-shadow", "0 .1em gray");
+    this.left.style("cursor", "cursor: pointer;");
+    this.left.hide();
+
+    this.down = createButton("&#8595;");
+    this.elements.push(this.down);
+    this.down.position(60, height-70);
+    this.down.style("text-align", "center");
+    this.down.style("display", "inline-block");
+    this.down.style("margin", "5px");
+    this.down.style("font-weight", "bold");
+    this.down.style("font-size", "15px");
+    this.down.style("padding", "3px 6px 3px 6px");
+    this.down.style("background-color", "lightgray");
+    this.down.style("text-shadow", "1px 1px white");
+    this.down.style("color", "gray");
+    this.down.style("-webkit-border-radius", "7px");
+    this.down.style("-moz-border-radius", "7px");
+    this.down.style("-o-border-radius", "7px");
+    this.down.style("border-radius", "7px");
+    this.down.style("border-color", "transparent");
+    this.down.style("box-shadow", "0 .1em gray");
+    this.down.style("cursor", "cursor: pointer;");
+    this.down.hide();
+
+    this.right= createButton("&#8594");
+    this.elements.push(this.right);
+    this.right.position(87, height-70);
+    this.right.style("text-align", "center");
+    this.right.style("display", "inline-block");
+    this.right.style("margin", "5px");
+    this.right.style("font-weight", "bold");
+    this.right.style("font-size", "15px");
+    this.right.style("padding", "3px 4px 3px 4px");
+    this.right.style("background-color", "lightgray");
+    this.right.style("text-shadow", "1px 1px white");
+    this.right.style("color", "gray");
+    this.right.style("-webkit-border-radius", "7px");
+    this.right.style("-moz-border-radius", "7px");
+    this.right.style("-o-border-radius", "7px");
+    this.right.style("border-radius", "7px");
+    this.right.style("border-color", "transparent");
+    this.right.style("box-shadow", "0 .1em gray");
+    this.right.style("cursor", "cursor: pointer;");
+    this.right.hide();
 
     this.title = createDiv();
 
     this.fireSparks = new Group();
-    for(let sp=0; sp<100; ++sp)
+    for(let sp=0; sp<30; ++sp)
     {
       let spark = new Sprite(random(0, width), random(0, height), 5, random(5,30));
-      // spark.addImage(playerTexture);
+      spark.addImage(fire);
+      spark.setVelocity(random(-1,1),random(-1,1));
       this.fireSparks.add(spark);
     }
 
@@ -88,7 +188,19 @@ class MainMenu
       this.setting.class("fa fa-gear");
     })
 
-    
+    this.start.mouseOver(()=>{
+      this.start.position(width/2-65, height-285);
+
+      this.start.style("font-size", "35px");
+    })
+
+    this.start.mouseOut(()=>{
+      this.start.position(width/2-60, height-280);
+      this.start.style("font-size", "30px");
+    })
+
+    this.fireSparks.collide(this.fireSparks);
+
   }
 
   draw()
@@ -96,7 +208,7 @@ class MainMenu
     this.setting.position(width-40, 10);
     this.nextShip.position(width-50, height/2-50);
     this.preShip.position(20, height/2-50);
-    this.start.position(width/2-45, height-280);
+    // this.start.position(width/2-60, height-280);
 
     this.fireSparks.draw();
     drawSprites();
@@ -107,9 +219,61 @@ class MainMenu
     textSize(55);
     text("Battle Ship", width/2-250, height/2-190);
     pop();
+
+    textSize(12);
+    stroke("grey");
+    strokeWeight(2);
+    fill("white");
+    text("Move the Player", 140, height-60);
   }
 }
+// ======================================= Main menu setting ======================================= //
+class MenuSetting
+{
+  constructor()
+  {
+    this.elements = [];
 
+    this.volume = createSlider(0, 1, 0.5, 0.01);
+    this.elements.push(this.volume);
+    this.volume.hide();
+
+    this.backToMenu = createButton("Back to menu");
+    this.elements.push(this.backToMenu);
+    this.backToMenu.hide();
+
+    this.save = createButton("Save");
+    this.elements.push(this.save);
+    this.save.hide();
+
+    this.load = createButton("Load");
+    this.elements.push(this.load);
+    this.load.hide();
+
+  }
+
+  update()
+  {
+    battleSong.setVolume(this.volume.value());
+    // print(this.volume.value())
+  }
+
+  draw()
+  {
+    push();
+    this.volume.position(width-240, 100);
+    this.backToMenu.position(width-250, 270);
+    this.save.position(width-300, 220);
+    this.load.position(width-140, 220);
+
+    noStroke();
+    rect(width-350, 20, 300, 300, 20);
+    textSize(15);
+    stroke(5);
+    text("Volume", width-300, 115);
+    pop();
+  }
+}
 // ======================================= Game Scene ======================================= //
 class MainGameScene
 {
@@ -165,8 +329,12 @@ class MainGameScene
     textSize(20);
     text("Wave  " + wave, width/2-50, height-15);
     fill("red");
+    stroke("white");
+    strokeWeight(1);
     this.heart.position(25, height-32);
     rect(50, height-30, Game.player.hp, 10);
+    fill("yellow")
+    text(Game.playerCurrency, width-70, height-15);
     pop();
   }
 }
@@ -215,9 +383,13 @@ class UpgradeMenu
     this.id = 2;
     this.elements = [];
 
-    this.firerate = createButton("Upgrade");
+    this.firerate = createButton("Upgrade-rate");
     this.firerate.hide();
     this.elements.push(this.firerate);
+
+    this.firespeed = createButton("Upgrade-speed");
+    this.firespeed.hide();
+    this.elements.push(this.firespeed);
   }
 
   update()
