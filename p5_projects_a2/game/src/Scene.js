@@ -502,7 +502,7 @@ class LoadingScene
     if (!this.done)
     {
       Game.player.posy+=1*deltaTime/10;
-      if (this.duration > 20*1)
+      if (this.duration > 60*3)
       {
         this.duration = 0;
         this.done = true;
