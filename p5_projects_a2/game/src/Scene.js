@@ -62,7 +62,7 @@ class MainMenu
 
     this.up = createButton("&#8593");
     this.elements.push(this.up);
-    this.up.position(60, height-101);
+    this.up.position(110, height-101);
     this.up.style("text-align", "center");
     this.up.style("display", "inline-block");
     this.up.style("margin", "5px");
@@ -83,7 +83,7 @@ class MainMenu
 
     this.left = createButton("&#8592;");
     this.elements.push(this.left);
-    this.left.position(30, height-70);
+    this.left.position(80, height-70);
     this.left.style("text-align", "center");
     this.left.style("display", "inline-block");
     this.left.style("margin", "5px");
@@ -104,7 +104,7 @@ class MainMenu
 
     this.down = createButton("&#8595;");
     this.elements.push(this.down);
-    this.down.position(60, height-70);
+    this.down.position(110, height-70);
     this.down.style("text-align", "center");
     this.down.style("display", "inline-block");
     this.down.style("margin", "5px");
@@ -125,7 +125,7 @@ class MainMenu
 
     this.right= createButton("&#8594");
     this.elements.push(this.right);
-    this.right.position(87, height-70);
+    this.right.position(137, height-70);
     this.right.style("text-align", "center");
     this.right.style("display", "inline-block");
     this.right.style("margin", "5px");
@@ -144,7 +144,26 @@ class MainMenu
     this.right.style("cursor", "cursor: pointer;");
     this.right.hide();
 
-    // this.title = createDiv();
+    this.space = createButton("");
+    this.elements.push(this.space);
+    this.space.position(width/2+20, height-80);
+    this.space.style("text-align", "center");
+    this.space.style("display", "inline-block");
+    this.space.style("margin", "5px");
+    this.space.style("font-weight", "bold");
+    this.space.style("font-size", "30px");
+    this.space.style("padding", "10px 40px");
+    this.space.style("background-color", "lightgray");
+    this.space.style("text-shadow", "-1px -1px black, 1px 1px white");
+    this.space.style("color", "gray");
+    this.space.style("-webkit-border-radius", "7px");
+    this.space.style("-moz-border-radius", "7px");
+    this.space.style("-o-border-radius", "7px");
+    this.space.style("border-radius", "7px");
+    this.space.style("border-color", "transparent");
+    this.space.style("box-shadow", "0 .1em gray");
+    this.space.style("cursor", "cursor: pointer;");
+    this.space.hide();
 
     this.fireSparks = new Group();
     for(let sp=0; sp<30; ++sp)
@@ -208,7 +227,6 @@ class MainMenu
     this.setting.position(width-40, 10);
     this.nextShip.position(width-50, height/2-50);
     this.preShip.position(20, height/2-50);
-    // this.start.position(width/2-60, height-280);
 
     this.fireSparks.draw();
     drawSprites();
@@ -220,11 +238,14 @@ class MainMenu
     text("Battle Ship", width/2-250, height/2-190);
     pop();
 
+    push();
     textSize(12);
     stroke("grey");
     strokeWeight(2);
     fill("white");
-    text("Move the Player", 140, height-60);
+    text("Move the Player", 190, height-60);
+    text("Fire", 430, height-58);
+    pop();
   }
 }
 // ======================================= Main menu setting ======================================= //
@@ -237,39 +258,28 @@ class MenuSetting
     this.volume = createSlider(0, 1, 0.5, 0.01);
     this.elements.push(this.volume);
     this.volume.hide();
-
-    // this.backToMenu = createButton("Back to menu");
-    // this.elements.push(this.backToMenu);
-    // this.backToMenu.hide();
-    //
-    // this.save = createButton("Save");
-    // this.elements.push(this.save);
-    // this.save.hide();
-    //
-    // this.load = createButton("Load");
-    // this.elements.push(this.load);
-    // this.load.hide();
-
   }
 
   update()
   {
     battleSong.setVolume(this.volume.value());
-    // print(this.volume.value())
   }
 
   draw()
   {
     push();
     this.volume.position(width-240, 100);
-    // this.backToMenu.position(width-250, 270);
-    // this.save.position(width-300, 220);
-    // this.load.position(width-140, 220);
 
     noStroke();
+    fill("#D3D3D3");
     rect(width-350, 20, 300, 300, 20);
+    fill(0, 0);
+    stroke("black");
+    rect(width-340, 30, 280,280, 10);
     textSize(15);
     stroke(5);
+    strokeWeight(2);
+    fill("white");
     text("Volume", width-300, 115);
     pop();
   }
@@ -345,33 +355,68 @@ class GameSettingMenu
   {
     this.elements = [];
 
+    this.volume = createSlider(0, 1, 0.5, 0.01);
+    this.elements.push(this.volume);
+    this.volume.hide();
+
     this.backToMenu = createButton("Back to menu");
     this.elements.push(this.backToMenu);
+    this.backToMenu.style("border", "none");
+    this.backToMenu.style("background-color", "inherit");
+    this.backToMenu.style("padding", "14px 28px");
+    this.backToMenu.style("font-size", "16px");
+    this.backToMenu.style("cursor", "pointer");
+    this.backToMenu.style("display", "inline-block");
     this.backToMenu.hide();
 
     this.save = createButton("Save");
     this.elements.push(this.save);
+    this.save.style("border", "none");
+    this.save.style("background-color", "inherit");
+    this.save.style("padding", "14px 28px");
+    this.save.style("font-size", "16px");
+    this.save.style("cursor", "pointer");
+    this.save.style("display", "inline-block");
     this.save.hide();
 
     this.load = createButton("Load");
     this.elements.push(this.load);
+    this.load.style("border", "none");
+    this.load.style("background-color", "inherit");
+    this.load.style("padding", "14px 28px");
+    this.load.style("font-size", "16px");
+    this.load.style("cursor", "pointer");
+    this.load.style("display", "inline-block");
     this.load.hide();
   }
 
   update()
   {
+    battleSong.setVolume(this.volume.value());
 
   }
 
   draw()
   {
     push();
-    this.backToMenu.position(width-250, 270);
-    this.save.position(width-300, 220);
-    this.load.position(width-140, 220);
+    this.volume.position(width-240, 100);
+    this.backToMenu.position(width-280, 260);
+    this.save.position(width-330, 220);
+    this.load.position(width-170, 220);
 
     noStroke();
+    stroke(0);
+    fill("#D3D3D3");
+    stroke(0);
     rect(width-350, 20, 300, 300, 20);
+    fill(0, 0);
+    stroke("black");
+    rect(width-340, 30, 280,280, 10);
+    textSize(15);
+    stroke(0);
+    strokeWeight(2);
+    fill("white");
+    text("Volume", width-300, 115);
     pop();
   }
 }
@@ -383,13 +428,27 @@ class UpgradeMenu
     this.id = 2;
     this.elements = [];
 
-    this.firerate = createButton("Upgrade-rate");
-    this.firerate.hide();
+    this.firerate = createButton("Upgrade");
     this.elements.push(this.firerate);
+    this.firerate.style("border", "none");
+    this.firerate.style("color", "grey");
+    this.firerate.style("background-color", "inherit");
+    this.firerate.style("padding", "14px 28px");
+    this.firerate.style("font-size", "15px");
+    this.firerate.style("cursor", "pointer");
+    this.firerate.style("display", "inline-block");
+    this.firerate.hide();
 
-    this.firespeed = createButton("Upgrade-speed");
-    this.firespeed.hide();
+    this.firespeed = createButton("Upgrade");
     this.elements.push(this.firespeed);
+    this.firespeed.style("border", "none");
+    this.firespeed.style("color", "grey");
+    this.firespeed.style("background-color", "inherit");
+    this.firespeed.style("padding", "14px 28px");
+    this.firespeed.style("font-size", "15px");
+    this.firespeed.style("cursor", "pointer");
+    this.firespeed.style("display", "inline-block");
+    this.firespeed.hide();
   }
 
   update()
@@ -399,13 +458,31 @@ class UpgradeMenu
 
   draw()
   {
-    this.firerate.show();
-    this.firerate.position(width-230, 370);
+    this.firerate.position(width-180, 370);
+    this.firespeed.position(width-180, 420);
+
     push();
     noStroke();
 
-    fill("grey");
+    fill("#D3D3D3");
     rect(width-320, 350, 250, 350, 20);
+    fill(0, 0);
+    stroke("black");
+    rect(width-310, 360, 230, 330, 10);
+
+    textSize(15);
+    fill("black");
+    text("Firerate: ", width-300, 400);
+    text("FireSpeed: ", width-300, 450);
+    textSize(17);
+    text((Game.player.firerate / 60).toFixed(1), width-230, 400);
+    text((Game.player.firespeed).toFixed(1), width-220, 450);
+    stroke("gold");
+    fill("black");
+    textSize(20);
+    strokeWeight(1);
+    text("60", width-180, 400);
+    text("20", width-180, 450);
     pop();
   }
 }
@@ -425,9 +502,6 @@ class LoadingScene
     if (!this.done)
     {
       Game.player.posy+=1*deltaTime/10;
-      Game.player.width-=.095*deltaTime/10;
-      Game.player.height-=.203*deltaTime/10;
-      // if (this.duration > 60*3)
       if (this.duration > 20*1)
       {
         this.duration = 0;
@@ -493,15 +567,16 @@ class LeaderboardMenu
     background(bg);
     textSize(30);
     textFont(titleFont);
+    stroke(255);
+
     text("LeaderBoard", width/2-170, 100);
     textSize(20);
-    fill("red");
-    text(Game.defeatEnemeyCount, 300, 200);
-    text(score[0], 430, 280);
-
     fill("black");
     text("Score:", 130, 200);
     text("Heighest Score:", 130, 280);
-
+    noStroke();
+    fill("red");
+    text(Game.defeatEnemeyCount, 300, 200);
+    text(score[0], 430, 280);
   }
 }

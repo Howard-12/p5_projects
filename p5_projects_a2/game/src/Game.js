@@ -15,20 +15,22 @@ class Game
     this.upgradeMenu = new UpgradeMenu();
     this.leaderboardMenu = new LeaderboardMenu();
 
-    this.enemies = [];
     this.playerBullets = [];
 
     this.scoreCount = 0;
     this.bgy = 0;
+    this.enemyDestoried = new Group();
   }
 
-  static player = new Player(width/2-10, height/2-30, 60, 120);
+  static player = new Player(width/2-10, height/2-30, 35, 160);
+  static enemies = [];
   static playerScore = 0;
   static playerCurrency = 0;
   static gameWave = 1;
   static nextWave = 10;
   static defeatEnemeyCount = 0;
   static gamePause = false;
+  static spwanrate = 60;
   static gameP()
   {
     return Game.gamePause = !Game.gamePause;
@@ -52,8 +54,10 @@ class Game
       if (keyIsDown(32) || (mouseButton == LEFT && mouseIsPressed == true))
         if (!Game.player.onCooldown)
         {
+          playerShoot.setVolume(0.2);
+          playerShoot.play();
           Game.player.onCooldown = true;
-          this.playerBullets.push(new Bullet(Game.player.posx+cos(Game.player.rotation), (Game.player.posy)-sin(Game.player.rotation), 10, 10, "pb1"));
+          this.playerBullets.push(new Bullet(Game.player.posx+cos(Game.player.rotation), (Game.player.posy)-sin(Game.player.rotation)-Game.player.height/2, 10, 10, "pb1"));
         }
 
       // ------ rotate ------ //
@@ -68,7 +72,6 @@ class Game
       startclick.play();
       this.gameStart = true;
       this.loadScene = true;
-      // this.mainMenu.fireSparks.removeSprites();
       this.windowS.onDetach(this.mainMenu);
     })
 
@@ -86,6 +89,7 @@ class Game
     })
 
     this.mainMenu.setting.mousePressed(()=>{                // main menu setting menu
+      menuSelect.play();
       this.mainMenu.setting.toggle = !this.mainMenu.setting.toggle;
       if(this.mainMenu.setting.toggle)
       {
@@ -100,6 +104,7 @@ class Game
     })
 
     this.settingScene.backToMenu.mousePressed(()=>{         // navigate to main menu
+      startclick.play();
       Game.gamePause=true;
       Game.player.hp = Game.player.maxHP;
       this.gameRestart = true;
@@ -107,9 +112,6 @@ class Game
       this.settingPause = false;
       this.upgradePause = false;
       this.mainGameScene.setting.toggle = false;
-      // this.windowS.onAttach(this.mainMenu);
-      // this.windowS.onDetach(this.mainGameScene);
-      // this.windowS.onDetach(this.settingScene);
       this.windowS.deAttach(this.mainMenu);
     })
 
@@ -147,14 +149,25 @@ class Game
       this.windowS.onAttach(this.mainGameScene);
     })
 
-    this.upgradeMenu.firerate.mousePressed(()=>{
-      Game.player.deCooldown(10);
+    this.upgradeMenu.firerate.mousePressed(()=>{            // upgrade fire rate
+      if(Game.playerCurrency > 60)
+      {
+        Game.playerCurrency-=60;
+        Game.player.deCooldown(5);
+      }
     })
 
-    this.leaderboardMenu.menu.mousePressed(()=>{
+    this.upgradeMenu.firespeed.mousePressed(()=>{           // upgrade fire speed
+      if(Game.playerCurrency > 20)
+      {
+        Game.playerCurrency-=20;
+        Game.player.addFirespeed(0.1);
+      }
+    })
+
+    this.leaderboardMenu.menu.mousePressed(()=>{            // leaderboard to main menu
       this.gameRestart = true;
       this.windowS.deAttach(this.mainMenu);
-      print(this.windowS);
     })
   }
 
@@ -190,13 +203,16 @@ class Game
     // ----- game restart ------ //
     if (this.gameRestart)
     {
-      this.enemies = [];
+      Game.enemies = [];
       this.playerBullets = [];
       Game.player.posx = width/2-10;
       Game.player.posy = height/2-30;
-      Game.player.width = 60;
-      Game.player.height = 120;
+      Game.player.rotation = 0;
+      Game.player.width = 35;
+      Game.player.height = 160;
       Game.player.firerate = 30;
+      Game.player.firespeed = 1;
+      Game.gameWave = 1;
     }
     this.gameRestart = false;
 
@@ -206,11 +222,12 @@ class Game
     // ------ game over ------ //
     if (Game.player.hp == 0)
     {
+
       Game.player.hp = Game.player.maxHP;
       this.windowS.deAttach(this.leaderboardMenu);
       if (Game.defeatEnemeyCount > parseInt(score[0]))
         saveStrings([str(Game.defeatEnemeyCount)], "score.txt");
-      // print(parseInt(score[0]));
+      Game.gamePause = true;
     }
 
     // ------ save game state ------ //
@@ -229,25 +246,45 @@ class Game
     if (!Game.gamePause)
     {
       // ------ player collide with enemies ------ //
-      for (let enemy=0; enemy<this.enemies.length; ++enemy)
-        if (this.collide(Game.player.getVertices(), this.enemies[enemy].getVertices()))
+      for (let enemy=0; enemy<Game.enemies.length; ++enemy)
+        if (this.collide(Game.player.getVertices(), Game.enemies[enemy].getVertices()))
         {
           Game.player.c = true;
-          if (Game.player.hp != 0)
-            Game.player.hp-=100;
-          this.enemies.splice(this.enemies.indexOf(this.enemies[enemy]), 1);
-        }
+          if (Game.player.hp != 0)////////////////////////////////////////////////////////////
+            Game.player.hp-=5;
+          Game.enemies.splice(Game.enemies.indexOf(Game.enemies[enemy]), 1);
 
+        }
       // ------ player bullets collide with enemies ------ //
       for (let pb=0; pb<this.playerBullets.length; ++pb)
-        for (let enemy=0; enemy<this.enemies.length; ++enemy)
-          if (this.collide(this.playerBullets[pb].getVertices(), this.enemies[enemy].getVertices()))
+        for (let enemy=0; enemy<Game.enemies.length; ++enemy)
+          if (this.collide(this.playerBullets[pb].getVertices(), Game.enemies[enemy].getVertices()))
           {
-            this.enemies.splice(this.enemies.indexOf(this.enemies[enemy]), 1);
-            Game.defeatEnemeyCount++;
-            Game.playerCurrency+=10;
+            if (Game.enemies[enemy].label == "enemy")
+            {
+              explodeSound.setVolume(0.3);
+              explodeSound.play();
+              Game.defeatEnemeyCount++;
+              Game.playerCurrency+=5;
+              let explode = createSprite(this.playerBullets[pb].posx, this.playerBullets[pb].posy);
+              explode.scale = 0.3;
+              explode.life = 100;
+              explode.addAnimation("explode", explodeAnimation);
+              this.enemyDestoried.add(explode);
+            }
+            Game.enemies.splice(Game.enemies.indexOf(Game.enemies[enemy]), 1);
             // this.playerBullets.splice(this.playerBullets.indexOf(this.playerBullets[pb]), 1);
           }
+
+      // ------ edge detect ------ //
+      if(Game.player.posx+Game.player.width/2>=width)
+        Game.player.posx = width-Game.player.width/2;
+      if(Game.player.posx-Game.player.width/2<=0)
+        Game.player.posx = Game.player.width/2;
+      if( Game.player.posy+Game.player.height/2>=height)
+        Game.player.posy = height-Game.player.height/2;
+      if(Game.player.posy-Game.player.height/2<=0)
+        Game.player.posy = Game.player.height/2;
 
       // ------ wave system ------ //
       if (Game.defeatEnemeyCount > Game.nextWave)
@@ -255,20 +292,24 @@ class Game
         Game.gameWave++;
         Game.nextWave += 10;
         Game.defeatEnemeyCount = 0;
+        if(Game.spwanrate > 10)
+          Game.spwanrate -= 10;
       }
 
-      // ------ 50% chance of spawning enemies every 3 second ------ //
-      if (frameCount % (20*1) == 0)
+      // ------ chance of spawning enemies ------ //
+      if (frameCount % (Game.spwanrate) == 0)
       {
-        if (random() < 1.8)
-          this.enemies.push(new CSprite(random(30, width-30),0,30,60,"en1"));
+        if (random() < 0.6)
+          Game.enemies.push(new Enemy(random(30, width-30),0,20,110,"en1"));////////////////////////////////////////
+        else if (random() < 1 && Game.gameWave >= 2)
+          Game.enemies.push(new Enemy(random(30, width-30),random(0, height/2),20,60,"en2"));
       }
 
       // ------ update everything ------ //
-      for (let en of this.enemies)
+      for (let en of Game.enemies)
       {
         if (en.life > en.maxLife)
-          this.enemies.splice(this.enemies.indexOf(en), 1);
+          Game.enemies.splice(Game.enemies.indexOf(en), 1);
         en.update();
       }
       for (let pb of this.playerBullets)
@@ -287,11 +328,13 @@ class Game
     image(bg, 0, this.bgy);
     image(bg, 0, this.bgy-height+10);
 
-    for (let en of this.enemies)
+    for (let en of Game.enemies)
       en.draw();
     for (let pb of this.playerBullets)
       pb.draw();
+    animation(waterRipple, Game.player.posx, Game.player.posy);
     Game.player.draw();
+    drawSprites();
     this.windowS.draw();
   }
 
@@ -299,13 +342,13 @@ class Game
   {
     let data = {};
     data.player = Game.player;
-    data.enemies = this.enemies;
+    data.enemies = Game.enemies;
     save(data, "data.json");
   }
 
   load()
   {
-    this.enemies = [];
+    Game.enemies = [];
     loadJSON("data.json", (data)=>{
       Game.player.posx = data.player.posx;
       Game.player.posy = data.player.posy;
@@ -315,9 +358,9 @@ class Game
 
       for (let e=0; e<data.enemies.length; ++e)
       {
-        this.enemies.push(new CSprite(data.enemies[e].posx, data.enemies[e].posy,30,60, data.enemies[e].type));
-        this.enemies[e].life = data.enemies[e].life;
-        this.enemies[e].hp = data.enemies[e].hp;
+        Game.enemies.push(new Enenmy(data.enemies[e].posx, data.enemies[e].posy,30,60, data.enemies[e].type));
+        Game.enemies[e].life = data.enemies[e].life;
+        Game.enemies[e].hp = data.enemies[e].hp;
       }
     });
   }
