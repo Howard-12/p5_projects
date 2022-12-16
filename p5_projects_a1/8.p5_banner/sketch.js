@@ -17,7 +17,7 @@ function setup() {
   noStroke();
 
   // draw dots
-  for (let d=0; d<250; d++) {
+  for (let d=0; d<350; d++) {
     dots.push(new Dot());
   }
 }
@@ -32,23 +32,33 @@ function draw() {
   course = font.textToPoints('1701ICT', width/2-390, height/2+60, 200);
 
   push();
-  for (dot of dots) {
+  strokeWeight(1);
+  for(let i=0; i<dots.length-1; ++i)
+  {
+    let d = dots[i];
+    for (let j=i+1; j<dots.length; ++j)
+    {
+      if (dist(d.position.x, d.position.y, dots[j].position.x, dots[j].position.y) < 50)
+      {
+        stroke(random(10,255), random(10,255), random(10,255));
+        line(d.position.x, d.position.y, dots[j].position.x, dots[j].position.y);
+      }
+    }
+
+    for (let w=i+1; w<course.length; ++w)
+    {
+      if (dist(d.position.x, d.position.y, course[w].x, course[w].y) < 40)
+      {
+        stroke(random(10,255), random(10,255), random(10,255));
+        line(d.position.x, d.position.y, course[w].x, course[w].y);
+      }
+    }
+  }
+  for (dot of dots)
+  {
     dot.show();
     dot.edge();
-    for (other of dots) {
-      strokeWeight(1);
-      if (other != dot && dist(dot.position.x, dot.position.y, other.position.x, other.position.y) < 50) {
-        stroke(random(10,255), random(10,255), random(10,255));
-        line(dot.position.x, dot.position.y, other.position.x, other.position.y);
-      }
-    }
     dot.update(dT);
-    for (word of course) {
-      if (dist(dot.position.x, dot.position.y, word.x, word.y) < 40) {
-        stroke(random(10,255), random(10,255), random(10,255));
-        line(dot.position.x, dot.position.y, word.x, word.y);
-      }
-    }
   }
   pop();
 
